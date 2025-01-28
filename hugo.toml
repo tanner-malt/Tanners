@@ -1,0 +1,29 @@
+baseURL = 'https://tanner-mcgrath.me/'
+languageCode = 'en-us'
+title = 'Tanners Site'
+theme = 'beautifulhugo'
+timeZone = "America/New_York"
+
+enableRobotsTXT = true          # Generate a robots.txt file
+
+[params]
+  description = "This is my blog/learning space"  
+  author = { name = "Tanner McGrath", bio = "Writer and Developer" }        
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Blog"
+    url = "/blog/"
+    weight = 2
+
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark.renderer]
+    unsafe = true  # Allow raw HTML in Markdown
+
+[outputs]
+  home = ["HTML", "RSS"]  # Generate HTML and RSS for homepage
