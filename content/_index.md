@@ -1,8 +1,9 @@
 +++
 date = '2025-01-26T20:56:01-05:00'
-title = 'What is this?'
+title = 'Tanners Webpage'
 +++
-## Introduction
+## Landing Page
+You might be wondering, what is this webpage for?
 
 Put simply, this is my website where I will do some blogging, I'll be going over things I find interesting, learned, want to learn, or anything else that catches my attention.
 
