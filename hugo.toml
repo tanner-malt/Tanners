@@ -31,3 +31,10 @@ enableRobotsTXT = true          # Generate a robots.txt file
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
+
+author: 
+  name: "Tanner McGrath"
+  github: https://github.com/tanner-malt
+  email: tanner@tanner-mcgrath.me
+  linkedin: https://www.linkedin.com/in/tanner-mcgrath-aa6aa0228
+  kaggle: 
