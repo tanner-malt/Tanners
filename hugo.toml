@@ -1,6 +1,6 @@
 baseURL = "https://tanner-mcgrath.me"
 languageCode = 'en-us'
-title = 'Tanners Web Page'
+title = 'Tanner Info & More'
 theme = 'beautifulhugo'
 timeZone = "America/New_York"
 
