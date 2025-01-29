@@ -1,4 +1,4 @@
-baseURL = 'https://tanner-mcgrath.me/'
+baseURL = "https://tanner-mcgrath.me"
 languageCode = 'en-us'
 title = 'Tanners Site'
 theme = 'beautifulhugo'
