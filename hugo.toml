@@ -26,4 +26,4 @@ enableRobotsTXT = true          # Generate a robots.txt file
     unsafe = true  # Allow raw HTML in Markdown
 
 [outputs]
-  home = ["HTML", "RSS"]  # Generate HTML and RSS for homepage
+home = ["HTML", "RSS", "JSON"]
