@@ -8,5 +8,5 @@ This is my "library" where I will be storing information I find useful, I like t
 
 | Pages                                            | 
 | -----------                                      | 
-| [Math](tanner-mcgrath.me/Library/Mathematics/)   | 
-| [Computers](tanner-mcgrath.me/Library/Computers/)|
+| [Math](/Mathematics/)   | 
+| [Computers](/Library/Computers/)|
