@@ -1,5 +1,4 @@
 +++
-date = '2025-01-28T20:56:01-05:00'
 title = 'Library Introduction'
 +++
 
@@ -7,8 +6,12 @@ title = 'Library Introduction'
 
 This is my "library" where I will be storing information I find useful, I like to be quite meticulous and store things so if i forget, I can have an easy reference point. 
 
-{{< columns >}}
-This is column 1.
-{{< column >}}
-This is column 2.
-{{< endcolumns >}}
+[menu]
+  [[menu.main]]
+    name = "Computers"
+    url = "/Library/Computers/"
+    weight = 1
+  [[menu.main]]
+    name = "Mathematics"
+    url = "/Library/Mathematics/"
+    weight = 2
