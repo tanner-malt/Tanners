@@ -1,5 +1,5 @@
 +++
-date = '2025-02-1'
+date = '2025-02-01'
 title = 'Filling out a website'
 +++
 

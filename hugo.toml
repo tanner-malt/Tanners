@@ -16,13 +16,17 @@ enableRobotsTXT = true          # Generate a robots.txt file
     url = "/"
     weight = 1
   [[menu.main]]
+    name = "Portfolio"
+    url = "/Portfolio/"
+    weight = 2
+  [[menu.main]]
     name = "Blog"
     url = "/blog/"
-    weight = 2
+    weight = 3
   [[menu.main]]
     name = "Library"
     url = "/Library/"
-    weight = 3
+    weight = 4
 
 [markup]
   defaultMarkdownHandler = "goldmark"
