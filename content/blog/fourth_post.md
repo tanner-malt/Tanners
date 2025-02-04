@@ -61,3 +61,7 @@ Pretty simple, and more than likely will be adding things to src and config, my 
 Containers are also a fun conversation, I more or less have known they exist for over a year, but didnt really understand what they were or how they worked, I actually once on an interview mistook a generic docker program for their proprietary containers they made, needless to say that showed my complete inexpierence working with them.
 
 I still don't really have a strong understand of the workflows they open up, but i do know i should use it for my coinbase tracker, for context the plan is to deploy it 24/7 on some webhosting service with low latency, my understanding is if i containerize my program it should enable me to package everything up nice and cleanly.
+
+## Note to include "Modern" events
+
+I wanted to include this for my next blog, talk about something more interesting, modern events/political :) 
