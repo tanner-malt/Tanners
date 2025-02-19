@@ -11,6 +11,8 @@ Top Tier flavors:
 Good Tier:
 1. Berry (400 cal)
 2. Chocolate (400 cal)
+3. Banana (400 cal)
+4. Salted Caramel (400 cal) *needs to be cold*
 
 Tolerable:
 
@@ -37,16 +39,19 @@ Good:
 
 # Fast Food 
 
-Good:
+Go to:
 1. Mcdonalds
 2. Arbys
 3. Steak n Shake
 4. Chic fil A
 5. Canes
+6. Jersey Mikes
 
 Good:
 1. Wendys
 2. Burger King
+3. Subway
+    Italian Herbs and Cheese, Provolone cheese, 1200 calories, meat is good, veggies is good
 
 
 # Pizza Places
@@ -55,6 +60,8 @@ Some of these are local, so I guess I'm doxing myself.
 
 Good:
 1. Little Caesars
+    Deep dish pizza 2770 calories, good but only want it sometimes
+    bacon & cheese crazy Puffs (700 calories), terrible, took 1 bite and didnt finish
 
 
 Okay:

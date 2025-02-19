@@ -9,13 +9,6 @@ This is my Portfolio, where I will attempt to cover majority of projects I have 
 Below will be a list of links detailing each project I worked on, or at least notes for them if it's a school project... espcailly for my schoolwork I might be missing some code.
 
 
-| School Projects                 | 
-| -----------                     | 
-| [null](/Portfolio/Mathematics/)   | 
-| [null](/Portfolio/Computers/)|
-| [null](/Portfolio/Robotics/)  |
-
-
 | Personal Projects               | 
 | -----------                     | 
 | [null](/Portfolio/Mathematics/)   | 
@@ -24,6 +17,13 @@ Below will be a list of links detailing each project I worked on, or at least no
 
 
 | Work Projects                   | 
+| -----------                     | 
+| [null](/Portfolio/Mathematics/)   | 
+| [null](/Portfolio/Computers/)|
+| [null](/Portfolio/Robotics/)  |
+
+
+| School Projects                 | 
 | -----------                     | 
 | [null](/Portfolio/Mathematics/)   | 
 | [null](/Portfolio/Computers/)|
