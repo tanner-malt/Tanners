@@ -9,12 +9,13 @@ Going to DC this weekend! Friend mickey wanted to go see some of his friends the
 
 Wanted to add the following to my food library, going to try and mark what i eat on the daily.
 
-For the record, todays menu is banana huel, some beef jerkey, salted carmel huel, strawberry banana huel, and we will see a flavor when we get home. will probably drink one and a half tonight. 
+For the record, todays menu is banana huel, some beef jerkey, salted carmel huel, strawberry banana huel, and we will see a flavor when we get home. will probably drink one and a half tonight. I also started refrigerating drinks before having them, and its added a lot of flabor
 
 Little Ceasars deep dish pizza (2770 calories)
 Little Ceasars bacon & cheese crazy Puffs (700 calories)
 Subway Order (1200 calories)
 Banana Huel (400 calories)
+Salted Caramel Huel (400 Calories)
 
 Other than that, not much going on. Struggling to keep my sleep schedule somewhat normal.
 
@@ -52,11 +53,11 @@ I'll record this in my weight data set, but i was 248 yesterday, this morning i 
 | Febuary (In Progress)    | 253    |
 | March (Hopeful)    | 239    |
 
-we lost 1 pound since last time. I am 1 pound from my lowest this month, and 9 from my goal for this month.
+we lost 0 pound since last time. I am 1 pound from my lowest this month, and 9 from my goal for this month.
 
 # Learning Objectives
 This was all about math math math, when i complete my notes ill go ahead and add them here. 
 
 # Modern Events
 
-MEGA movement is starting in full swing it seems. This is pretty absurd to me, but I see the reaction to immigration. There are a lot of violent crimes commited. I'm not sure how I feel about it all just yet. 
+A lot of news, crypto being a scam is not surprising. I still think bitcoin is, but you can make money there. A lot of these other projects are just rug pulls, through and through. 
