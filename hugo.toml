@@ -1,7 +1,6 @@
 baseURL = "https://tanner-mcgrath.me"
 languageCode = 'en-us'
 title = 'Techy Tanner'
-theme = 'beautifulhugo'
 timeZone = "America/New_York"
 
 enableRobotsTXT = true          # Generate a robots.txt file
