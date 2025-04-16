@@ -1,0 +1,13 @@
+<header>
+    <nav>
+      <ul>
+        {{ range .Site.Menus.main }}
+          <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  
+    <!-- DARK/LIGHT TOGGLE BUTTON -->
+    <button id="themeToggle" aria-label="Toggle dark/light">🌓</button>
+  </header>
+  

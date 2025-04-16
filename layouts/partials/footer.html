@@ -1,0 +1,28 @@
+<script>
+    const root = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+  
+    // Function to set theme
+    function setTheme(mode) {
+      if (mode === 'dark') {
+        root.classList.remove('light');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        root.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+  
+    // Load saved preference
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') {
+      root.classList.add('light');
+    }
+  
+    // Bind click handler
+    toggleBtn?.addEventListener('click', () => {
+      const isLight = root.classList.contains('light');
+      setTheme(isLight ? 'dark' : 'light');
+    });
+  </script>
+  
