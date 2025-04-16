@@ -1,0 +1,13 @@
+{{ define "main" }}
+<section>
+  <h1>Project Portfolio</h1>
+  <ul>
+    {{ range .Pages.ByDate.Reverse }}
+      <li>
+        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        <p>{{ .Params.summary }}</p>
+      </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}

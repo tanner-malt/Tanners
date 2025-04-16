@@ -1,7 +1,21 @@
 {{ define "main" }}
-  <section>
-    <h1>Hi, I'm [Your Name]</h1>
-    <p>I build fast, scalable web solutions for startups & solo founders.</p>
-    <a href="/contact/">Let's Work Together</a>
-  </section>
+
+<section class="section">
+  <article class="homepage-content">
+    {{ .Content }}
+  </article>
+</section>
+
+<section class="section link-grid">
+  <div class="link-card">
+    <h2><a href="/portfolio/">View My Portfolio</a></h2>
+    <p>Explore selected projects I've delivered for startups and businesses.</p>
+  </div>
+
+  <div class="link-card">
+    <h2><a href="/blog/">Read the Blog</a></h2>
+    <p>See my thoughts on tech, consulting, and building high-performance sites.</p>
+  </div>
+</section>
+
 {{ end }}

@@ -1,0 +1,36 @@
+.homepage-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    font-size: 1.1rem;
+  }
+  
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 3rem auto;
+  }
+  
+  .link-card {
+    background: white;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  
+  .link-card h2 {
+    margin: 0 0 0.5rem;
+  }
+  
+  .link-card a {
+    color: #007acc;
+    text-decoration: none;
+  }
+  
+  .link-card a:hover {
+    text-decoration: underline;
+  }
+  
