@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>{{ .Title }} | {{ .Site.Title }}</title>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-xD7...trimmed..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- Metadata -->
-  {{ partial "meta.html" . }}
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ .Title }} | {{ .Site.Title }}</title>
+  
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+    {{ partial "meta.html" . }}
+    {{ partial "schema.html" . }}
+  </head>
+  
 
 <body>
 
