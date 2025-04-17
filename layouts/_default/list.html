@@ -1,1 +1,18 @@
+{{ define "main" }}
+<section>
+  <h1>{{ .Title }}</h1>
 
+  {{ range .Pages.ByDate.Reverse }}
+    <article class="blog-card">
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p class="meta">{{ .Date.Format "January 2, 2006" }}</p>
+      {{ if .Params.summary }}
+        <p>{{ .Params.summary }}</p>
+      {{ else }}
+        <p>{{ .Summary }}</p>
+      {{ end }}
+      <a class="read-more" href="{{ .RelPermalink }}">Read more →</a>
+    </article>
+  {{ end }}
+</section>
+{{ end }}

@@ -1,5 +1,5 @@
 +++
-title = "New Site"
+title = "14th Post: New Site"
 date = 2025-04-16T21:35:20-04:00
 summary = "I re-designed the site!"
 draft = false

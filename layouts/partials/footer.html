@@ -1,4 +1,32 @@
-<script>
+<footer>
+  <p>© {{ now.Year }} {{ .Site.Params.author.name }} — All Rights Reserved</p>
+
+  <ul class="social-links">
+    {{ with .Site.Params.author.github }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener" title="{{ . }}">
+        <i class="fab fa-github"></i> GitHub
+      </a></li>
+    {{ end }}
+    {{ with .Site.Params.author.linkedin }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener" title="{{ . }}">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a></li>
+    {{ end }}
+    {{ with .Site.Params.author.kaggle }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener" title="{{ . }}">
+        <i class="fab fa-kaggle"></i> Kaggle
+      </a></li>
+    {{ end }}
+    {{ with .Site.Params.author.email }}
+      <li><a href="mailto:{{ . }}" title="mailto:{{ . }}">
+        <i class="fas fa-envelope"></i> Email
+      </a></li>
+    {{ end }}
+  </ul>
+</footer>
+
+  
+  <script>
     const root = document.body;
     const toggleBtn = document.getElementById('themeToggle');
   
@@ -25,4 +53,3 @@
       setTheme(isLight ? 'dark' : 'light');
     });
   </script>
-  

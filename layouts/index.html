@@ -1,21 +1,16 @@
 {{ define "main" }}
+<section class="homepage-content">
+  <h1 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center;">
+    {{ .Title }}
+  </h1>
 
-<section class="section">
-  <article class="homepage-content">
+  <div class="homepage-intro">
     {{ .Content }}
-  </article>
-</section>
-
-<section class="section link-grid">
-  <div class="link-card">
-    <h2><a href="/portfolio/">View My Portfolio</a></h2>
-    <p>Projects I have worked on, professionally and personally.</p>
   </div>
 
-  <div class="link-card">
-    <h2><a href="/blog/">Read the Blog</a></h2>
-    <p>See my thoughts and get to know me as a human being!</p>
+  <div class="link-grid">
+    <a class="homepage-button" href="/blog">📘 Read the Blog</a>
+    <a class="homepage-button" href="/portfolio">🛠 View Portfolio</a>
   </div>
 </section>
-
 {{ end }}
