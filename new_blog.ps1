@@ -3,25 +3,30 @@ param (
     [string]$Title
 )
 
-# Step 1: Generate a slug
+# Step 1: Get date info
+$now = Get-Date
+$year = $now.Year
+$month = "{0:D2}" -f $now.Month
+
+# Step 2: Clean and slugify title
 $cleanTitle = $Title -replace '^\d+(st|nd|rd|th)\s+post[:\s-]*', ''
 $slug = $cleanTitle.ToLower() -replace '[^a-z0-9]+', '-' -replace '(^-+|-+$)', ''
 
-# Step 2: Create the post using Hugo's archetype
-$path = "blog/$slug.md"
-hugo new $path
+# Step 3: Build Hugo path
+$relativePath = "blog/$year/$month/$slug/index.md"
 
-# Step 3: Organize the post into the correct folder
-Start-Sleep -Milliseconds 500  # Wait for Hugo to write file
-Write-Host "Running organizer script..."
-.\organize-blog-folders.ps1
+# Step 4: Create the post with Hugo
+hugo new $relativePath
 
-# Step 4: Try to find and open the new file
-$newFile = Get-ChildItem -Recurse -Filter index.md | Where-Object { $_.FullName -match "$slug\\index\.md$" } | Select-Object -First 1
+# Step 5: Open the new file
+Start-Sleep -Milliseconds 500  # Wait for Hugo
+$newFile = Join-Path "content" $relativePath
 
-if ($newFile) {
-    Write-Host "Created: $($newFile.FullName)"
-    code $newFile.FullName  # Open in VS Code (optional)
+if (Test-Path $newFile) {
+    Write-Host "✅ Created: $newFile"
+    code $newFile  # Optional: open in VS Code
 } else {
-    Write-Warning "Could not locate the new file after organizing."
+    Write-Warning "⚠️ Could not locate the new file."
 }
+
+#hugo new blog/2025/04/my-slug/index.md
