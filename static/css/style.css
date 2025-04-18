@@ -84,6 +84,7 @@ header {
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
 header nav ul {

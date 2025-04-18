@@ -26,6 +26,11 @@ enableRobotsTXT = true          # Generate a robots.txt file
     name = "About"
     url = "/about/"
     weight = 4
+  [[menu.main]]
+    name = "Now"
+    url = "/now/"
+    weight = 5
+
 
 [markup]
   defaultMarkdownHandler = "goldmark"
