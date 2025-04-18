@@ -1,18 +1,15 @@
 {{ define "main" }}
-<section class="homepage-content">
-  <h1 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center;">
-    {{ .Title }}
-  </h1>
+<section class="hero" style="text-align: center; padding: 4rem 1rem;">
+  <h1 class="single-title" style="font-size: 3rem;">Hi, I'm Tanner!</h1>
+  <p style="color: var(--muted); font-size: 1.2rem; max-width: 700px; margin: 1.5rem auto;">
+    This is my website. 
+  </p>
 
-  <div class="homepage-intro">
-    {{ .Content }}
-  </div>
-
-  <div class="link-grid">
-    <a class="homepage-button" href="/blog">📘 Read the Blog</a>
-    <a class="homepage-button" href="/portfolio">🛠 View Portfolio</a>
-    <a class="homepage-button" href="/about/" >👤 About Me</a>
-
+  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem;">
+    <a href="/about/" class="homepage-button">👤 About Me</a>
+    <a href="/blog/" class="homepage-button">📘 Read the Blog</a>
+    <a href="/portfolio/" class="homepage-button">🛠 View Portfolio</a>
+    <a href="/now/" class="homepage-button">📌 What I'm Doing Now</a>
   </div>
 </section>
 {{ end }}
