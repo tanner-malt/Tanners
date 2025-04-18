@@ -1,13 +1,77 @@
 {{ define "main" }}
-<section>
-  <h1>Project Portfolio</h1>
-  <ul>
-    {{ range .Pages.ByDate.Reverse }}
-      <li>
-        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        <p>{{ .Params.summary }}</p>
-      </li>
-    {{ end }}
-  </ul>
+<section class="section">
+  <h1 class="single-title" style="text-align: center;">My Portfolio & Services</h1>
+  <p style="text-align: center; max-width: 700px; margin: 1rem auto; color: var(--muted);">
+    These are real-world problems I’ve helped solve — and the kind of work I’d love to do more of.
+  </p>
+
+  <div class="card-list">
+
+    <!-- Machine Learning -->
+    <div class="card flip-card">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3 class="card-title">🔍 Predictive Modeling</h3>
+          <p class="card-summary">Use your own data to make smarter decisions.</p>
+        </div>
+        <div class="card-back">
+          <p>Built machine learning models to predict trends, customer behavior, and risk. Not just hype — focused on practical results for planning and decision-making.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forecasting -->
+    <div class="card flip-card">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3 class="card-title">📈 Forecasting & Time Series</h3>
+          <p class="card-summary">Turn past data into future insight.</p>
+        </div>
+        <div class="card-back">
+          <p>Created revenue and demand forecasts using time series analysis. These tools help small businesses plan staffing, inventory, and cash flow with more clarity and less guesswork.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Dashboards -->
+    <div class="card flip-card">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3 class="card-title">📊 KPI Dashboards</h3>
+          <p class="card-summary">See your business clearly, in one place.</p>
+        </div>
+        <div class="card-back">
+          <p>Designed and built dashboards that visualize performance across sales, retention, cost, and operations. No more digging through sheets — just actionable clarity.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automation -->
+    <div class="card flip-card">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3 class="card-title">⚙ Automation & Workflow Tools</h3>
+          <p class="card-summary">Save hours every week.</p>
+        </div>
+        <div class="card-back">
+          <p>Wrote scripts to automate tasks like PDF parsing, database updates, and report generation. Clients saved 5–10 hours weekly by removing repetitive manual steps.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Programming Help -->
+    <div class="card flip-card">
+      <div class="card-inner">
+        <div class="card-front">
+          <h3 class="card-title">💻 Programming Help</h3>
+          <p class="card-summary">Need a script or a custom tool?</p>
+        </div>
+        <div class="card-back">
+          <p>I’ve built calculators, bots, simulators, and backend utilities. If you’ve got an idea or problem that doesn’t fit in a template — I’ll write the code to make it real.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 {{ end }}
