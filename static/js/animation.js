@@ -1,92 +1,159 @@
 // static/js/animation.js
 
+// Logger utility
+const Logger = {
+  info: (message, data) => {
+    console.log(`ℹ️ ${message}`, data || '');
+  },
+  error: (message, error) => {
+    console.error(`❌ ${message}`, error || '');
+  },
+  debug: (message, data) => {
+    console.debug(`🔍 ${message}`, data || '');
+  }
+};
+
+// Animation state management
+const AnimationState = {
+  isAnimating: false,
+  activeCard: null,
+  activeSubCards: [],
+  
+  setActiveCard(card) {
+    this.activeCard = card;
+    this.isAnimating = true;
+  },
+  
+  reset() {
+    this.activeCard = null;
+    this.activeSubCards = [];
+    this.isAnimating = false;
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  // 1️⃣ Grab and log
-  const groups   = Array.from(document.querySelectorAll('.card-group'));
+  // Initialize elements
+  const groups = Array.from(document.querySelectorAll('.card-group'));
   const subCards = Array.from(document.querySelectorAll('.sub-card'));
-  console.log(`🔍 Found ${groups.length} card-groups and ${subCards.length} sub-cards`);
+  Logger.info(`Found ${groups.length} card-groups and ${subCards.length} sub-cards`);
 
-  // Pre-defined scatter offsets
-  const scatterPositions = [
-    { x: -150, y: -80 },
-    { x:  150, y: -80 },
-    { x:    0, y: 150 }
-  ];
+  // Calculate orbit positions based on screen size
+  const calculateOrbitPositions = (centerX, centerY, radius = 200) => {
+    const positions = [];
+    const numPositions = 3;
+    
+    for (let i = 0; i < numPositions; i++) {
+      const angle = (i * (2 * Math.PI / numPositions));
+      positions.push({
+        x: centerX + radius * Math.cos(angle),
+        y: centerY + radius * Math.sin(angle)
+      });
+    }
+    return positions;
+  };
 
-  // 2️⃣ Main card click → center, flip, scatter sub-cards
+  // Main card click handler
   groups.forEach((group, i) => {
     group.addEventListener('click', e => {
       e.stopPropagation();
-      console.log(`➡️ [group #${i}] click detected`, group);
+      Logger.debug(`Card group #${i} clicked`, group);
+
+      if (AnimationState.isAnimating) {
+        Logger.debug('Animation in progress, ignoring click');
+        return;
+      }
 
       resetAll();
+      AnimationState.setActiveCard(group);
       group.classList.add('selected');
       document.body.classList.add('dimmed');
 
+      // Get center position for orbit
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const orbitPositions = calculateOrbitPositions(centerX, centerY);
 
-      // Center & scale the card
+      // Center and scale the main card
       gsap.to(group, {
         duration: 0.5,
         scale: 1.2,
-        x: () => window.innerWidth/2  - (group.getBoundingClientRect().left + group.offsetWidth/2),
-        y: () => window.innerHeight/2 - (group.getBoundingClientRect().top  + group.offsetHeight/2),
+        x: centerX - (group.getBoundingClientRect().left + group.offsetWidth/2),
+        y: centerY - (group.getBoundingClientRect().top + group.offsetHeight/2),
         ease: 'power2.out',
-        transformOrigin: 'center center'
+        transformOrigin: 'center center',
+        onComplete: () => Logger.debug('Main card centered')
       });
 
-      // Flip it
+      // Flip animation
       const inner = group.querySelector('.card-inner');
-      console.log('   ↪️ Flipping inner element', inner);
       gsap.to(inner, {
         duration: 0.6,
         rotationY: 180,
         ease: 'power2.inOut',
-        delay: 0.5
+        delay: 0.5,
+        onComplete: () => Logger.debug('Card flipped')
       });
 
-      // Scatter its sub-cards
+      // Orbit sub-cards
       const subs = subCards.filter(sc => group.contains(sc));
-      console.log('   ↪️ Scattering sub-cards:', subs);
-      gsap.to(subs, {
-        duration: 0.4,
-        opacity: 1,
-        scale: 1,
-        x: (idx) => scatterPositions[idx].x,
-        y: (idx) => scatterPositions[idx].y,
-        ease: 'back.out(1.7)',
-        delay: 1.1,
-        stagger: 0.15
+      Logger.debug('Orbiting sub-cards', subs);
+
+      subs.forEach((sub, index) => {
+        const pos = orbitPositions[index];
+        gsap.to(sub, {
+          duration: 0.8,
+          opacity: 1,
+          scale: 1,
+          x: pos.x - (sub.getBoundingClientRect().left + sub.offsetWidth/2),
+          y: pos.y - (sub.getBoundingClientRect().top + sub.offsetHeight/2),
+          ease: 'back.out(1.7)',
+          delay: 1.1 + (index * 0.15),
+          onComplete: () => {
+            if (index === subs.length - 1) {
+              Logger.debug('All sub-cards orbited');
+            }
+          }
+        });
       });
     });
   });
 
-  // 3️⃣ Sub-card click → pop-out + dim
+  // Sub-card click handler
   subCards.forEach((card, ci) => {
     card.addEventListener('click', e => {
       e.stopPropagation();
-      console.log(`🔍 [sub#${ci}] click detected`, card);
+      Logger.debug(`Sub-card #${ci} clicked`, card);
+
+      if (!AnimationState.activeCard) {
+        Logger.error('No active card found');
+        return;
+      }
 
       gsap.to(card, {
         duration: 0.5,
         scale: 1.5,
-        x: () => window.innerWidth/2  - (card.getBoundingClientRect().left + card.offsetWidth/2),
-        y: () => window.innerHeight/2 - (card.getBoundingClientRect().top  + card.offsetHeight/2),
-        ease: 'power2.out'
+        x: window.innerWidth/2 - (card.getBoundingClientRect().left + card.offsetWidth/2),
+        y: window.innerHeight/2 - (card.getBoundingClientRect().top + card.offsetHeight/2),
+        ease: 'power2.out',
+        onComplete: () => Logger.debug('Sub-card popped out')
       });
 
-      document.body.classList.add('dimmed');
       card.classList.add('active');
     });
   });
 
-  // 4️⃣ Click outside → reset everything
+  // Click outside handler
   document.addEventListener('click', () => {
-    console.log('⏪ Document click → resetAll()');
+    if (!AnimationState.isAnimating) return;
+    
+    Logger.debug('Document click detected, resetting animations');
     resetAll();
   });
 
-  // 🔄 Helper to clear all classes & tweens
+  // Reset function
   function resetAll() {
+    Logger.debug('Resetting all animations');
+    
     groups.forEach(g => {
       g.classList.remove('selected');
       gsap.killTweensOf(g);
@@ -102,7 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.killTweensOf(sc);
       gsap.set(sc, { clearProps: 'all' });
     });
+
+    document.body.classList.remove('dimmed');
+    AnimationState.reset();
   }
 
-  console.log('✅ Portfolio interactions ready.');
+  Logger.info('Portfolio interactions initialized');
 });
