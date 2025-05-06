@@ -152,26 +152,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset function
   function resetAll() {
-    Logger.debug('Resetting all animations');
-    
-    groups.forEach(g => {
-      g.classList.remove('selected');
-      gsap.killTweensOf(g);
-      gsap.set(g, { clearProps: 'all' });
-
-      const inner = g.querySelector('.card-inner');
-      gsap.killTweensOf(inner);
-      gsap.set(inner, { clearProps: 'all' });
-    });
-
-    subCards.forEach(sc => {
-      sc.classList.remove('active');
-      gsap.killTweensOf(sc);
-      gsap.set(sc, { clearProps: 'all' });
-    });
-
-    document.body.classList.remove('dimmed');
+    // Reset animation state
     AnimationState.reset();
+    
+    // Remove dimming from body
+    document.body.classList.remove('dimmed');
+    
+    // Reset all card groups
+    groups.forEach(g => {
+        g.classList.remove('selected');
+        gsap.killTweensOf(g);
+        gsap.set(g, { 
+            clearProps: 'all',
+            scale: 1,
+            x: 0,
+            y: 0
+        });
+
+        const inner = g.querySelector('.card-inner');
+        gsap.killTweensOf(inner);
+        gsap.set(inner, { 
+            clearProps: 'all',
+            rotationY: 0
+        });
+    });
+
+    // Reset all sub-cards
+    subCards.forEach(sc => {
+        sc.classList.remove('active');
+        gsap.killTweensOf(sc);
+        gsap.set(sc, { 
+            clearProps: 'all',
+            scale: 0.5,
+            opacity: 0,
+            x: 0,
+            y: 0
+        });
+    });
+
+    // Force a reflow to ensure styles are applied
+    document.body.offsetHeight;
   }
 
   Logger.info('Portfolio interactions initialized');
