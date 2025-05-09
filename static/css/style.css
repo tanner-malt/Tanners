@@ -4,21 +4,21 @@
 
 /* Dark mode as default */
 :root {
-  --bg: #0f172a;          /* slate-900 */
-  --fg: #e2e8f0;          /* slate-200 */
-  --muted: #94a3b8;       /* slate-400 */
-  --accent: #3b82f6;      /* blue-500 */
-  --card-bg: #1e293b;     /* slate-800 */
-  --border: #334155;      /* slate-700 */
+  --bg: #0A0F1A;          /* Darker Slate/Navy Blue */
+  --fg: #E0E7FF;          /* Lighter, slightly bluish off-white */
+  --muted: #8A9BB0;       /* Desaturated Slate Blue */
+  --accent: #58A6FF;      /* Brighter, accessible blue */
+  --card-bg: #161E2D;     /* Slightly lighter dark card background */
+  --border: #2A3B53;      /* Softer border color */
 }
 
 body.light {
-  --bg: #f8fafc;          /* slate-50 */
-  --fg: #0f172a;          /* slate-900 */
-  --muted: #64748b;       /* slate-500 */
-  --accent: #2563eb;      /* blue-600 */
-  --card-bg: #ffffff;
-  --border: #cbd5e1;      /* slate-300 */
+  --bg: #F7F9FC;          /* Very light gray/off-white */
+  --fg: #1E2A3B;          /* Dark Slate Blue for text */
+  --muted: #5A6B80;       /* Darker muted color for light mode */
+  --accent: #0052CC;      /* Richer, deeper blue for light mode */
+  --card-bg: #FFFFFF;
+  --border: #D0D7E0;      /* Softer border for light mode */
 }
 
 /* =======================
@@ -95,7 +95,7 @@ header nav ul {
   list-style: none;
 }
 header nav a {
-  color: #fff;
+  color: var(--fg);
   font-weight: bold;
 }
 .avatar {
@@ -177,8 +177,35 @@ footer .social-links i {
   line-height: 1;
 }
 
+/* =======================
+   RESPONSIVE ADJUSTMENTS
+======================= */
 
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
 
+  header nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  header nav a {
+    display: block;
+    padding: 0.5rem 0;
+  }
+
+  #themeToggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
 
 /* =======================
    LAYOUT / STRUCTURE
@@ -424,7 +451,7 @@ footer .social-links i {
   z-index: 1;
 }
 
-/* Container: a single point at the card’s center */
+/* Container: a single point at the card's center */
 .sub-cards {
   position: absolute;
   top: 50%;
@@ -441,6 +468,8 @@ footer .social-links i {
   left: 0;
   transform: scale(0.5);
   opacity: 0;
+  visibility: visible;
+  display: block;
 
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -449,6 +478,10 @@ footer .social-links i {
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
   transition: opacity 0.3s, transform 0.3s;
   z-index: 1;
+  white-space: nowrap;
+  text-align: center;
+  min-width: 100px;
+  pointer-events: auto;
 }
 
 /* When the card is selected, let sub-cards be interactive and above it */
@@ -458,9 +491,11 @@ footer .social-links i {
 }
 
 /* Keep the main flip-card sized and square at 250px */
-.card-group .main-card {
+.card-inner {
   width: 250px;
-  /* (your existing styling…) */
+  height: 240px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
 }
 
 .card-group.selected .card-inner {
@@ -495,4 +530,31 @@ body.dimmed .card-group.selected {
 body.dimmed .card-group.selected .sub-card {
   z-index: 10000;
   pointer-events: auto;
+}
+
+/* Add styles for card front and back */
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--card-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Hover effect for card inner */
+.card-group:hover .card-inner {
+  transform: rotateY(180deg);
 }

@@ -2,7 +2,7 @@
 title = "Projects"
 date = 2025-05-02T18:45:27-04:00
 summary = "I talk about my recent projects and movtivation"
-draft = true
+draft = false
 +++
 
 # Life
@@ -15,11 +15,11 @@ I'm also ready to start cold calling and setting up business appointments, and l
 # Programming
 This covers my personal projects pretty well, in addition I made my first software application for multiple users, using tkinter and excel files, its meant to be a placeholder for an eventual migration over to a django framework with SQL, but I needed to make a proof of concept. 
 
-Other than that, I did some work on my AI assistant, mostly setting up the agent scheme, im not super happy with it, and likely will re-write, but i need to declare the scope.
+Other than that, I did some work on my AI assistant, mostly setting up the agent scheme, im not super happy with it, my goal is to create a pair programmer to help me debug, troubleshoot, and code, but so far it's been unable to access memory as i desire... i've been experimenting with an rquant db, but thus far i've had trouble getting the program to compile. over the weekend I'll likely update this as that is my number 2 goal, number 1 being this website being fully operational. 
 
 Re-doing
 1. Population Simulator (0%)
-2. AI Assistant (5%)
+2. AI Assistant (65%)
 3. Budget Tracker (0%)
 
 Making
@@ -30,7 +30,21 @@ Making
 5. Calculator (5%)
 
 # Fitness
+I hate this section of the blog, the months go by faster every month!!! I have hit a wall.
+| Month    | Weight (ending) |
+| -------- | ------- |
+| December  | 260    |
+| January | 256     |
+| Febuary   | 252   |
+| March  | 256   |
+| April    | 256    |
+| May (current)    | 260   |
+| May (goal)    | 240    |
+| June (Goal)    | 228    |
 
 # Learning Objectives
+I've learned MCP, Agent Orchestration Archectutre, JS, Type Script, React, Frontend development, and my next goals are for backend db set up. 
+
 
 # Modern Events
+I've been too busy to really follow policitcs. 

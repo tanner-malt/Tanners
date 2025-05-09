@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const winston = require('winston');
 const { format } = winston;
+require('winston-daily-rotate-file');
 
 // Ensure logs directory exists
 const logsDir = path.join(__dirname, '../logs');
@@ -10,11 +11,26 @@ if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir);
 }
 
+// Sanitize sensitive data
+const sanitizeData = (data) => {
+    const sensitiveFields = ['password', 'token', 'key', 'secret', 'authorization'];
+    const sanitized = { ...data };
+    
+    Object.keys(sanitized).forEach(key => {
+        if (sensitiveFields.some(field => key.toLowerCase().includes(field))) {
+            sanitized[key] = '[REDACTED]';
+        }
+    });
+    
+    return sanitized;
+};
+
 // Custom format for analytics
 const analyticsFormat = format.printf(({ level, message, timestamp, ...metadata }) => {
+    const sanitizedMetadata = sanitizeData(metadata);
     let msg = `${timestamp} [${level}] : ${message}`;
-    if (Object.keys(metadata).length > 0) {
-        msg += JSON.stringify(metadata);
+    if (Object.keys(sanitizedMetadata).length > 0) {
+        msg += JSON.stringify(sanitizedMetadata);
     }
     return msg;
 });
@@ -29,12 +45,19 @@ const createLogger = (filename) => {
         ),
         transports: [
             // Write all logs to console
-            new winston.transports.Console(),
-            // Write all logs to file
-            new winston.transports.File({ 
-                filename: path.join(logsDir, `${filename}.log`),
-                maxsize: 5242880, // 5MB
-                maxFiles: 5,
+            new winston.transports.Console({
+                format: format.combine(
+                    format.colorize(),
+                    format.simple()
+                )
+            }),
+            // Write all logs to file with rotation
+            new winston.transports.DailyRotateFile({
+                filename: path.join(logsDir, `${filename}-%DATE%.log`),
+                datePattern: 'YYYY-MM-DD',
+                maxSize: '20m',
+                maxFiles: '14d',
+                zippedArchive: true
             })
         ]
     });
@@ -45,6 +68,12 @@ const analyticsLogger = createLogger('analytics');
 const errorLogger = createLogger('errors');
 const performanceLogger = createLogger('performance');
 
+// Analytics tracking with IP anonymization
+const anonymizeIP = (ip) => {
+    if (!ip) return 'unknown';
+    return ip.replace(/\.\d+$/, '.0');
+};
+
 // Analytics tracking
 const trackPageView = (req) => {
     const analytics = {
@@ -52,7 +81,7 @@ const trackPageView = (req) => {
         path: req.path,
         method: req.method,
         userAgent: req.headers['user-agent'],
-        ip: req.ip,
+        ip: anonymizeIP(req.ip),
         referrer: req.headers.referer || 'direct',
         sessionId: req.session?.id,
         responseTime: req.responseTime
@@ -66,11 +95,11 @@ const trackError = (error, req) => {
     const errorData = {
         timestamp: new Date(),
         error: error.message,
-        stack: error.stack,
+        stack: process.env.NODE_ENV === 'production' ? undefined : error.stack,
         path: req?.path,
         method: req?.method,
         userAgent: req?.headers['user-agent'],
-        ip: req?.ip
+        ip: anonymizeIP(req?.ip)
     };
     
     errorLogger.error('Error Occurred', errorData);
