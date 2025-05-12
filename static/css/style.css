@@ -8,16 +8,34 @@
   --color-muted: #8A9BB0;
   --color-accent: #58A6FF;
   --color-card-bg: #161E2D;
+  --color-card-bg-alt: #1F2937; /* For card back or interactive elements */
   --color-border: #2A3B53;
+  --color-text-on-accent: #FFFFFF;
 
   /* Shadows */
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.15);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.2);
+  --shadow-card: var(--shadow-md);
+  --shadow-card-hover: var(--shadow-lg);
 
   /* Typography & Spacing */
-  --space: 1rem;
-  --radius: 6px;
-  --font-sans: system-ui, sans-serif;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-round: 50%;
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --font-monospace: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+  --transition-fast: 0.15s ease;
+  --transition-std: 0.3s ease;
 }
 
 body.light {
@@ -26,34 +44,226 @@ body.light {
   --color-muted: #5A6B80;
   --color-accent: #0052CC;
   --color-card-bg: #FFFFFF;
+  --color-card-bg-alt: #F0F2F5;
   --color-border: #D0D7E0;
+  --color-text-on-accent: #FFFFFF;
 }
 
 /* =======================================
    BASE & RESET
 ======================================= */
-* {
+*, *::before, *::after {
   box-sizing: border-box;
-  transition: background-color 0.3s, color 0.3s;
-}
-html, body {
   margin: 0;
   padding: 0;
-  background: var(--color-bg);
+}
+
+html {
+  font-size: 16px; /* Base font size */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--transition-std), color var(--transition-std);
 }
+
 a {
   color: var(--color-accent);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
-a:hover,
-a:focus {
+a:hover, a:focus {
   text-decoration: underline;
+  color: var(--color-fg); /* Or a lighter/darker accent */
 }
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Focus outline for accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =======================================
+   PORTFOLIO CARD ANIMATIONS
+======================================= */
+
+/* Grid container for cards */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md);
+  max-width: 1200px;
+  margin: var(--space-lg) auto;
+}
+
+/* Card Group: Base for positioning and perspective */
+.card-group {
+  perspective: 1500px;
+  position: relative;
+  cursor: pointer;
+  transition: opacity var(--transition-std), transform var(--transition-std);
+  aspect-ratio: 4/3;
+  margin-bottom: var(--space-md);
+}
+
+/* Card Inner: Handles the flip animation */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Card Faces: Front and Back */
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+  text-align: center;
+  overflow: hidden;
+}
+
+.card-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.card-front .card-title {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--color-accent);
+}
+
+.card-front .card-summary {
+  font-size: 1rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.card-back {
+  background-color: var(--color-card-bg-alt);
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.card-back p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--color-fg);
+}
+
+/* Sub-Cards Container: Positioned within the card-back */
+.sub-cards-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+  display: none;
+  pointer-events: none;
+}
+
+/* Individual Sub-Card */
+.sub-card {
+  position: absolute;
+  background-color: var(--color-accent);
+  color: var(--color-text-on-accent);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  visibility: hidden;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* State Classes */
+body.dimmed-background::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9990;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-std);
+}
+
+body.dimmed-background.active::before {
+  opacity: 1;
+}
+
+.card-group.deselected {
+  opacity: 0.3;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.card-group.selected {
+  z-index: 9995;
+}
+
+.sub-card.focused {
+  z-index: 10000;
+}
+
+/* Hover effects */
+.card-group:hover .card-face {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-group:hover .card-title {
+  color: var(--color-fg);
 }
 
 /* =======================================
@@ -174,88 +384,3 @@ footer .social-links a:hover { color: var(--color-fg); text-decoration: underlin
 .blog-card .meta { color: var(--color-muted); font-size: 0.9rem; margin-bottom: 1rem; }
 .read-more { color: var(--color-accent); font-weight: bold; }
 .read-more:hover { text-decoration: underline; }
-
-/* =======================================
-   PORTFOLIO: FLIP CARDS & GRID
-======================================= */
-.card-list {
-  max-width: 700px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-.flip-card { perspective: 1000px; }
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 240px;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease;
-}
-/* Controlled flip via class */
-.flip-card.is-flipped .card-inner { transform: rotateY(180deg); }
-.card-front, .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  background: var(--color-card-bg);
-  color: var(--color-fg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.card-back { transform: rotateY(180deg); }
-
-/* Sub-cards scattering */
-.card-group { position: relative; overflow: visible; }
-.sub-cards {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 0; height: 0;
-  pointer-events: none;
-}
-.sub-card {
-  position: absolute;
-  top: 0; left: 0;
-  transform: scale(0);
-  opacity: 0;
-  visibility: hidden;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 0.5rem 1rem;
-  box-shadow: var(--shadow-card);
-  white-space: nowrap;
-  text-align: center;
-  transition: opacity 0.3s, transform 0.3s;
-}
-.card-group.selected .sub-card {
-  visibility: visible;
-  pointer-events: auto;
-}
-
-/* Dimming and interaction control */
-body.dimmed::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 9998;
-}
-body.dimmed .card-group { opacity: 0.3; pointer-events: none; }
-body.dimmed .card-group.selected { opacity: 1; pointer-events: auto; z-index: 9999; }
-
-/* Focused sub-card state */
-body.sub-card-focused .card-list { pointer-events: none; }
-body.sub-card-focused .card-group.selected, body.sub-card-focused .card-group.selected * { pointer-events: auto; }
-
-/* Ensure consistent z-index on focused elements */
-.card-group.selected .card-inner { z-index: 10000; }
-.card-group.selected .sub-card { z-index: 10001; }

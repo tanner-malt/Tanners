@@ -1,303 +1,442 @@
-// static/js/animation.js
-
 // Animation state management
 const AnimationState = {
-  isAnimating: false,
-  mainCardAnimating: false,
-  activeCard: null,
-  focusedSubCard: null,
-  subCardOrbitTweens: [],
-  orbitPathElement: null,
-  centerPointElement: null,
-
-  setActiveCard(card) {
-    this.activeCard = card;
-    this.isAnimating = true;
-    this.mainCardAnimating = true;
-  },
-  setFocusedSubCard(subCard) {
-    this.focusedSubCard = subCard;
-    this.isAnimating = true;
-  },
-  clearFocusedSubCard() {
-    if (this.focusedSubCard) {
-      this.focusedSubCard.classList.remove('focused');
-    }
-    this.focusedSubCard = null;
-    if (!this.mainCardAnimating) {
-      this.isAnimating = false;
+  isAnimating: false,        // General lock for any animation transition
+  mainCardAnimating: false, // Lock for main card selection, flip, centering, reset
+  subCardAnimating: false,   // Lock for sub-card focus/unfocus animations
+  activeCard: null,          // The currently selected .card-group element
+  focusedSubCard: null,    // The currently focused .sub-card element
+  subCardOrbitTweens: [],  // Stores GSAP tweens for sub-card orbits to kill them on reset
+  // orbitPathElement and centerPointElement from old state are not used in this version
+  
+  // --- Mutators with logging for easier debugging ---
+  setActiveCard(cardElement) {
+    console.debug('[StateChange] Setting active card:', cardElement);
+    this.activeCard = cardElement;
+    if (cardElement) {
+      this.mainCardAnimating = true; // Main card interaction starts
+      this.isAnimating = true;       // General lock
+    } else { // Clearing active card
+      // mainCardAnimating and isAnimating will be reset by the function calling this (e.g., resetAllAnimations)
     }
   },
-  reset() {
-    this.subCardOrbitTweens.forEach(tween => tween.kill());
-    this.subCardOrbitTweens = [];
 
-    if (this.orbitPathElement) {
-      gsap.to(this.orbitPathElement, {
-        opacity: 0,
-        scale: 0,
-        duration: 0.3,
-        ease: 'power1.in',
-        onComplete: () => {
-          if (this.orbitPathElement.parentNode) {
-            this.orbitPathElement.parentNode.removeChild(this.orbitPathElement);
-          }
-          this.orbitPathElement = null;
-        }
-      });
-    }
-
-    if (this.centerPointElement) {
-      if (this.centerPointElement.parentNode) {
-        this.centerPointElement.parentNode.removeChild(this.centerPointElement);
-      }
-      this.centerPointElement = null;
-    }
-
-    if (this.focusedSubCard) {
-      this.focusedSubCard.classList.remove('focused');
-    }
+  clearActiveCard() {
+    console.debug('[StateChange] Clearing active card.');
     if (this.activeCard) {
       this.activeCard.classList.remove('selected');
     }
     this.activeCard = null;
+    // mainCardAnimating and isAnimating are typically reset at the end of a sequence like resetAllAnimations
+  },
+
+  setFocusedSubCard(subCardElement) {
+    console.debug('[StateChange] Setting focused sub-card:', subCardElement);
+    this.focusedSubCard = subCardElement;
+    if (subCardElement) {
+      this.subCardAnimating = true;
+      this.isAnimating = true;
+      document.body.classList.add('sub-card-interaction-lock');
+    } else { // Clearing focused sub-card
+      this.subCardAnimating = false; 
+      if (!this.mainCardAnimating) {
+        this.isAnimating = false;
+      }
+      document.body.classList.remove('sub-card-interaction-lock');
+    }
+  },
+
+  clearFocusedSubCard(keepInteractionLock = false) {
+    console.debug('[StateChange] Clearing focused sub-card.');
+    if (this.focusedSubCard) {
+      this.focusedSubCard.classList.remove('focused');
+    }
+    this.focusedSubCard = null;
+    this.subCardAnimating = false;
+    if (!this.mainCardAnimating) { // Only release general lock if main card isn't busy
+        this.isAnimating = false;
+    }
+    if (!keepInteractionLock) {
+        document.body.classList.remove('sub-card-interaction-lock');
+    }
+  },
+
+  releaseGeneralLock() {
+    if (!this.mainCardAnimating && !this.subCardAnimating) {
+      console.debug('[StateChange] Releasing general animation lock.');
+      this.isAnimating = false;
+    }
+  },
+  
+  resetAllStateFlags() {
+    console.debug('[StateChange] Resetting ALL animation state flags.');
+    this.activeCard = null;
     this.focusedSubCard = null;
     this.isAnimating = false;
     this.mainCardAnimating = false;
-    document.body.classList.remove('dimmed', 'sub-card-focused');
+    this.subCardAnimating = false;
+    this.subCardOrbitTweens.forEach(tween => tween.kill());
+    this.subCardOrbitTweens = [];
+    // CSS class cleanup is handled by resetAllAnimations or specific state clearers
   }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap === 'undefined') {
-    console.error('GSAP library not loaded! Animation features will not work.');
+    console.error('GSAP library not loaded! Animations will not work.');
     return;
   }
 
-  const groups = Array.from(document.querySelectorAll('.card-group'));
-  const subCards = Array.from(document.querySelectorAll('.sub-card'));
+  const cardGroups = Array.from(document.querySelectorAll('.card-group'));
+  const allSubCards = Array.from(document.querySelectorAll('.sub-card'));
 
-  // Store original positions & hide sub-cards
-  groups.forEach(group => {
+  cardGroups.forEach(group => {
     const rect = group.getBoundingClientRect();
-    group.originalLeft = rect.left + window.scrollX;
-    group.originalTop = rect.top + window.scrollY;
-    group.originalWidth = group.offsetWidth;
-    group.originalHeight = group.offsetHeight;
+    group.originalState = {
+      left: rect.left + window.scrollX,
+      top: rect.top + window.scrollY,
+      width: rect.width,
+      height: rect.height,
+      opacity: 1,
+      scale: 1,
+      zIndex: getComputedStyle(group).zIndex || 1
+    };
 
-    const subs = Array.from(group.querySelectorAll('.sub-card'));
-    gsap.set(subs, { opacity: 0, scale: 0, visibility: 'hidden', display: 'block' });
+    const subCardContainer = group.querySelector('.sub-cards-container');
+    if (subCardContainer) {
+        const subs = Array.from(subCardContainer.querySelectorAll('.sub-card'));
+        gsap.set(subs, {
+            opacity: 0, 
+            scale: 0, 
+            x: 0, 
+            y: 0,
+            visibility: 'hidden',
+            transformOrigin: 'center center'
+        });
+    }
   });
 
-  // Main card click handler
-  groups.forEach(group => {
-    group.addEventListener('click', e => {
-      e.stopPropagation();
-      if (AnimationState.mainCardAnimating || AnimationState.isAnimating) return;
-      if (AnimationState.focusedSubCard) return;
-      if (AnimationState.activeCard === group) { resetAll(); return; }
-      if (AnimationState.activeCard && AnimationState.activeCard !== group) {
-        resetAll();
-        setTimeout(() => processGroupClick(group), 100);
+  cardGroups.forEach(group => {
+    group.addEventListener('click', () => {
+      console.debug('Card group clicked:', group, 'Current state:', { ...AnimationState });
+      if (AnimationState.focusedSubCard) {
+        console.debug('A sub-card is focused. Ignoring main card click.');
         return;
       }
-      processGroupClick(group);
+      if (AnimationState.mainCardAnimating || (AnimationState.isAnimating && AnimationState.activeCard !== group)) {
+        console.debug('Animation in progress, ignoring click.');
+        return;
+      }
+      if (AnimationState.activeCard === group) {
+        console.debug('Clicked active card. Resetting all.');
+        resetAllAnimations();
+      } else {
+        if (AnimationState.activeCard) {
+          console.debug('Another card is active. Resetting before selecting new one.');
+          resetAllAnimations(() => processCardSelection(group));
+        } else {
+          processCardSelection(group);
+        }
+      }
     });
   });
 
-  function processGroupClick(group) {
-    if (AnimationState.isAnimating || AnimationState.mainCardAnimating) return;
-
-    AnimationState.setActiveCard(group);
-    group.classList.add('selected');
-    document.body.classList.add('dimmed');
-
-    groups.forEach(g => {
-      if (g !== group) {
-        gsap.to(g, { opacity: 0.3, scale: 0.95, duration: 0.3, ease: 'power1.in', pointerEvents: 'none' });
+  allSubCards.forEach(subCard => {
+    subCard.addEventListener('click', (e) => {
+      e.stopPropagation();
+      console.debug('Sub-card clicked:', subCard, 'Current state:', { ...AnimationState });
+      const parentCardGroup = subCard.closest('.card-group');
+      if (!parentCardGroup || parentCardGroup !== AnimationState.activeCard || AnimationState.mainCardAnimating) {
+        console.debug('Sub-card click ignored: Parent not active or main card animating.');
+        return;
+      }
+      if (AnimationState.subCardAnimating && AnimationState.focusedSubCard !== subCard) {
+        console.debug('Sub-card click ignored: Another sub-card is currently animating.');
+        return;
+      }
+      if (AnimationState.focusedSubCard === subCard) {
+        console.debug('Clicked focused sub-card. Unfocusing.');
+        unfocusSubCard(subCard);
+      } else {
+        if (AnimationState.focusedSubCard) {
+            console.debug('Another sub-card was focused. Unfocusing it first.');
+            unfocusSubCard(AnimationState.focusedSubCard, () => focusSubCard(subCard));
+        } else {
+            focusSubCard(subCard);
+        }
       }
     });
+  });
 
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+  document.addEventListener('click', (event) => {
+    if (AnimationState.mainCardAnimating || AnimationState.subCardAnimating) return;
+    const clickedOnCardGroup = event.target.closest('.card-group');
+    const clickedOnSubCard = event.target.closest('.sub-card');
+    if (AnimationState.focusedSubCard && !clickedOnSubCard) {
+      console.debug('Clicked outside a focused sub-card. Unfocusing.');
+      unfocusSubCard(AnimationState.focusedSubCard);
+    } else if (AnimationState.activeCard && !clickedOnCardGroup && !clickedOnSubCard) {
+      console.debug('Clicked outside active card. Resetting all.');
+      resetAllAnimations();
+    }
+  });
 
-    // Center main card
-    gsap.to(group, {
+  function processCardSelection(groupElement) {
+    console.debug('Processing card selection for:', groupElement);
+    AnimationState.setActiveCard(groupElement);
+    groupElement.classList.add('selected');
+    document.body.classList.add('dimmed-background', 'active');
+    cardGroups.forEach(g => {
+      if (g !== groupElement) {
+        g.classList.add('deselected');
+      }
+    });
+    const targetX = (window.innerWidth / 2) - (groupElement.originalState.left + groupElement.originalState.width / 2);
+    const targetY = (window.innerHeight / 2) - (groupElement.originalState.top + groupElement.originalState.height / 2);
+    const targetScale = 1.2;
+    gsap.to(groupElement, {
+      x: targetX,
+      y: targetY,
+      scale: targetScale,
       duration: 0.6,
-      scale: 1.2,
-      x: centerX - (group.originalLeft + group.offsetWidth / 2),
-      y: centerY - (group.originalTop + group.offsetHeight / 2),
       ease: 'power2.out',
-      transformOrigin: 'center center',
-      zIndex: 9999,
+      zIndex: 9995,
       onComplete: () => {
-        AnimationState.mainCardAnimating = false;
-        const inner = group.querySelector('.card-inner');
-        // Flip
-        gsap.to(inner, {
-          duration: 0.6,
+        console.debug('Main card centered and scaled.');
+        const innerCard = groupElement.querySelector('.card-inner');
+        gsap.to(innerCard, {
           rotationY: 180,
+          duration: 0.6,
           ease: 'power2.inOut',
-          delay: 0.4,
-          onComplete: () => spawnSubCards(group, inner)
+          delay: 0.1,
+          onComplete: () => {
+            console.debug('Main card flipped. Revealing sub-cards.');
+            AnimationState.mainCardAnimating = false;
+            revealSubCards(groupElement);
+            AnimationState.releaseGeneralLock();
+          }
         });
       }
     });
   }
 
-  function spawnSubCards(group, inner) {
-    const subContainer = group.querySelector('.sub-cards');
-    if (subContainer) gsap.set(subContainer, { display: 'block', visibility: 'visible' });
-
-    const selectedSubs = Array.from(group.querySelectorAll('.sub-card'));
-    const cardRect = group.getBoundingClientRect();
-    const orbitRadius = Math.min(cardRect.width, cardRect.height) * 0.35;
-    const orbitDiameter = orbitRadius * 2;
+  function revealSubCards(parentGroup) {
+    const subCardContainer = parentGroup.querySelector('.sub-cards-container');
+    if (!subCardContainer) {
+      console.warn('No sub-cards-container found in parent:', parentGroup);
+      AnimationState.mainCardAnimating = false;
+      AnimationState.releaseGeneralLock();
+      return;
+    }
+    const subs = Array.from(subCardContainer.querySelectorAll('.sub-card'));
+    console.debug(`Found ${subs.length} sub-cards to reveal in:`, parentGroup);
+    if (subs.length === 0) {
+      AnimationState.mainCardAnimating = false;
+      AnimationState.releaseGeneralLock();
+      return;
+    }
+    gsap.set(subCardContainer, { display: 'block', visibility: 'visible' });
+    void subCardContainer.offsetHeight;
+    const orbitRadius = Math.min(parentGroup.offsetWidth, parentGroup.offsetHeight) * 0.30;
     const orbitSpeedBase = 30;
-
-    // Orbit path
-    if (AnimationState.orbitPathElement && AnimationState.orbitPathElement.parentNode) {
-      AnimationState.orbitPathElement.parentNode.removeChild(AnimationState.orbitPathElement);
-    }
-    const orbitCircle = document.createElement('div');
-    AnimationState.orbitPathElement = orbitCircle;
-    Object.assign(orbitCircle.style, {
-      position: 'absolute', width: `${orbitDiameter}px`, height: `${orbitDiameter}px`,
-      border: '1px dotted rgba(255,255,255,0.1)', borderRadius: '50%', pointerEvents: 'none',
-      zIndex: '9999', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'
-    });
-    inner.appendChild(orbitCircle);
-    gsap.set(orbitCircle, { scale: 0, opacity: 0 });
-    gsap.to(orbitCircle, { duration: 0.7, scale: 1, opacity: 0, ease: 'power2.out', delay: 0.2 });
-
-    selectedSubs.forEach((sub, index) => {
-      gsap.killTweensOf(sub);
-      const startAngle = (Math.PI * 2 / selectedSubs.length) * index;
-      sub.orbitParams = { angle: startAngle, radius: orbitRadius, speed: orbitSpeedBase + Math.random() * 5, direction: 1 };
-
-      gsap.set(sub, {
-        position: 'absolute', left: '50%', top: '50%',
-        scale: 0, opacity: 0, visibility: 'visible', transformOrigin: 'center center',
-        zIndex: 10000, display: 'block'
-      });
-
-      // Spawn animation
-      gsap.to(sub, {
-        scale: 1, opacity: 1,
-        x: Math.cos(startAngle) * orbitRadius,
-        y: Math.sin(startAngle) * orbitRadius,
-        transform: `translate(-50%, -50%) translate(${Math.cos(startAngle)*orbitRadius}px, ${Math.sin(startAngle)*orbitRadius}px)`,
-        duration: 0.6, delay: 0.1 + index * 0.15, ease: 'power2.out',
-        backgroundColor: 'var(--color-accent)', color: '#fff',
-        onComplete: () => startOrbit(sub)
-      });
-    });
-  }
-
-  function startOrbit(sub) {
-    const tween = gsap.to(sub.orbitParams, {
-      angle: sub.orbitParams.angle + Math.PI * 2,
-      duration: sub.orbitParams.speed,
-      ease: 'none',
-      repeat: -1,
-      onUpdate() {
-        if (AnimationState.focusedSubCard !== sub) {
-          const { angle, radius } = sub.orbitParams;
-          gsap.set(sub, { x: Math.cos(angle)*radius, y: Math.sin(angle)*radius,
-            transform: `translate(-50%, -50%) translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)` });
+    const tl = gsap.timeline({
+        onStart: () => { 
+            AnimationState.isAnimating = true;
+        },
+        onComplete: () => {
+            AnimationState.isAnimating = false;
+            console.debug('All sub-cards revealed and orbiting.');
         }
-      }
     });
-    AnimationState.subCardOrbitTweens.push(tween);
+    subs.forEach((sub, index) => {
+      gsap.killTweensOf(sub);
+      if (sub.orbitParams) gsap.killTweensOf(sub.orbitParams); 
+      const startAngle = (Math.PI * 2 / subs.length) * index;
+      const speed = orbitSpeedBase + (Math.random() * 10 - 5);
+      sub.orbitParams = {
+        angle: startAngle,
+        radius: orbitRadius * (0.8 + Math.random() * 0.4),
+        speed: Math.max(15, speed),
+        direction: (Math.random() > 0.5) ? 1 : -1
+      };
+      const initialX = Math.cos(startAngle) * sub.orbitParams.radius;
+      const initialY = Math.sin(startAngle) * sub.orbitParams.radius;
+      gsap.set(sub, { visibility: 'visible'});
+      tl.add(gsap.delayedCall(0, () => {
+        gsap.fromTo(sub, 
+          { opacity: 0, scale: 0, x: 0, y: 0 },
+          {
+            opacity: 1,
+            scale: 1,
+            x: initialX,
+            y: initialY,
+            duration: 0.5,
+            ease: 'power2.out',
+            onComplete: () => {
+              const orbitTween = gsap.to(sub.orbitParams, {
+                angle: sub.orbitParams.angle + (sub.orbitParams.direction * Math.PI * 2),
+                duration: sub.orbitParams.speed,
+                ease: 'none',
+                repeat: -1,
+                onUpdate: function() {
+                  if (AnimationState.focusedSubCard !== sub) {
+                    gsap.set(sub, {
+                      x: Math.cos(this.targets()[0].angle) * this.targets()[0].radius,
+                      y: Math.sin(this.targets()[0].angle) * this.targets()[0].radius
+                    });
+                  }
+                }
+              });
+              AnimationState.subCardOrbitTweens.push(orbitTween);
+            }
+          }
+        );
+      }), index * 0.1);
+    });
   }
 
-  // Sub-card click handler
-  subCards.forEach(card => {
-    card.addEventListener('click', e => {
-      e.stopPropagation();
-      const parent = card.closest('.card-group');
-      if (AnimationState.mainCardAnimating || AnimationState.isAnimating || !AnimationState.activeCard || parent !== AnimationState.activeCard) return;
-
-      if (AnimationState.focusedSubCard === card) {
-        focusExit(card);
-        return;
-      }
-      if (AnimationState.focusedSubCard && AnimationState.focusedSubCard !== card) {
-        focusExit(AnimationState.focusedSubCard);
-      }
-      focusSubCard(card);
-    });
-  });
-
-  function focusSubCard(card) {
-    AnimationState.setFocusedSubCard(card);
-    card.classList.add('focused');
-    document.body.classList.add('sub-card-focused');
-    const tween = AnimationState.subCardOrbitTweens.find(t => t.targets()[0] === card.orbitParams);
-    if (tween) tween.pause();
-    const group = AnimationState.activeCard;
-    const rect = group.getBoundingClientRect();
-    gsap.to(card, {
-      duration: 0.5, scale: 2, x: (window.innerWidth/2 - rect.left - rect.width/2),
-      y: (window.innerHeight/2 - rect.top - rect.height/2), zIndex: 10002, ease: 'power2.out',
-      onComplete: () => { AnimationState.isAnimating = false; }
-    });
-  }
-
-  function focusExit(card) {
-    AnimationState.isAnimating = true;
-    const tween = AnimationState.subCardOrbitTweens.find(t => t.targets()[0] === card.orbitParams);
-    if (tween) tween.pause();
-    gsap.to(card, {
-      duration: 0.4, scale: 1,
-      x: Math.cos(card.orbitParams.angle)*card.orbitParams.radius,
-      y: Math.sin(card.orbitParams.angle)*card.orbitParams.radius,
-      zIndex: 10000, ease: 'power2.out',
+  function focusSubCard(subCard) {
+    console.debug('Focusing sub-card:', subCard);
+    AnimationState.setFocusedSubCard(subCard);
+    subCard.classList.add('focused');
+    const existingOrbitTween = AnimationState.subCardOrbitTweens.find(t => t.targets()[0] === subCard.orbitParams);
+    if (existingOrbitTween) existingOrbitTween.pause();
+    const mainCardGroup = AnimationState.activeCard;
+    const containerRect = mainCardGroup.querySelector('.sub-cards-container').getBoundingClientRect();
+    const windowCenterX = window.innerWidth / 2;
+    const windowCenterY = window.innerHeight / 2;
+    const targetX = windowCenterX - containerRect.left;
+    const targetY = windowCenterY - containerRect.top;
+    const targetScale = 1.5;
+    gsap.to(subCard, {
+      x: targetX,
+      y: targetY,
+      scale: targetScale,
+      duration: 0.4,
+      ease: 'power2.out',
+      zIndex: 10000,
       onComplete: () => {
-        if (tween) tween.resume();
-        AnimationState.clearFocusedSubCard();
-        document.body.classList.remove('sub-card-focused');
+        console.debug('Sub-card focused.');
+        AnimationState.subCardAnimating = false;
+        AnimationState.releaseGeneralLock();
       }
     });
   }
 
-  // Click outside handler
-  document.addEventListener('click', event => {
-    if (AnimationState.mainCardAnimating || AnimationState.isAnimating) return;
-    const onGroup = event.target.closest('.card-group');
-    const onSub = event.target.closest('.sub-card');
-    if (AnimationState.focusedSubCard && AnimationState.focusedSubCard !== onSub) {
-      focusExit(AnimationState.focusedSubCard);
-    } else if (AnimationState.activeCard && !onGroup && !AnimationState.focusedSubCard) {
-      resetAll();
-    }
-  });
+  function unfocusSubCard(subCard, callback) {
+    console.debug('Unfocusing sub-card:', subCard);
+    AnimationState.subCardAnimating = true;
+    AnimationState.isAnimating = true;
+    subCard.classList.remove('focused');
+    const targetX = Math.cos(subCard.orbitParams.angle) * subCard.orbitParams.radius;
+    const targetY = Math.sin(subCard.orbitParams.angle) * subCard.orbitParams.radius;
+    gsap.to(subCard, {
+      x: targetX,
+      y: targetY,
+      scale: 1,
+      duration: 0.4,
+      ease: 'power2.out',
+      zIndex: 10,
+      onComplete: () => {
+        console.debug('Sub-card unfocused.');
+        const existingOrbitTween = AnimationState.subCardOrbitTweens.find(t => t.targets()[0] === subCard.orbitParams);
+        if (existingOrbitTween) existingOrbitTween.resume();
+        if(AnimationState.focusedSubCard === subCard) {
+            AnimationState.clearFocusedSubCard(); 
+        } else {
+            AnimationState.subCardAnimating = false;
+            AnimationState.releaseGeneralLock();
+        }
+        if (callback) callback();
+      }
+    });
+  }
 
-  // Reset all animations
-  function resetAll() {
+ function resetAllAnimations(onCompleteCallback) {
+    console.debug('Resetting all animations.');
+    if (!AnimationState.activeCard && !AnimationState.focusedSubCard) {
+        console.debug('Nothing to reset.');
+        if(onCompleteCallback) onCompleteCallback();
+        return;
+    }
     AnimationState.mainCardAnimating = true;
     AnimationState.isAnimating = true;
-    const card = AnimationState.activeCard;
-    if (AnimationState.focusedSubCard) focusExit(AnimationState.focusedSubCard);
-    AnimationState.subCardOrbitTweens.forEach(t => t.kill());
-    AnimationState.subCardOrbitTweens = [];
-    if (card) {
-      card.classList.remove('selected');
-      const inner = card.querySelector('.card-inner');
-      gsap.to(inner, { duration: 0.4, rotationY: 0, ease: 'power1.in' });
-      gsap.to(card, { duration: 0.5, delay: 0.1, scale: 1, x: 0, y: 0, zIndex: 1, ease: 'power2.inOut', clearProps: 'transform' });
-      const subs = Array.from(card.querySelectorAll('.sub-card'));
-      subs.forEach((sub, i) => {
-        gsap.to(sub, { duration: 0.3, delay: 0.1 + i*0.05, scale: 0, opacity: 0, x: 0, y: 0, transform: 'translate(-50%, -50%)', ease: 'power1.in', onComplete: () => gsap.set(sub, { visibility: 'hidden' }) });
-      });
-    }
-    const delay = card ? 0.6 : 0;
-    gsap.delayedCall(delay, () => {
-      groups.forEach(g => gsap.to(g, { opacity: 1, scale: 1, duration: 0.3, clearProps: 'pointerEvents' }));
-      document.body.classList.remove('dimmed');
-      AnimationState.reset();
+    const cardToReset = AnimationState.activeCard;
+    const focusedSub = AnimationState.focusedSubCard;
+    const tl = gsap.timeline({
+        onComplete: () => {
+            console.debug('All reset animations complete.');
+            if (cardToReset) {
+                gsap.set(cardToReset, { clearProps: 'x,y,scale,zIndex' });
+                const innerCard = cardToReset.querySelector('.card-inner');
+                if (innerCard) gsap.set(innerCard, { clearProps: 'rotationY'});
+            }
+            AnimationState.resetAllStateFlags();
+            cardGroups.forEach(g => { 
+                g.classList.remove('selected', 'deselected');
+                gsap.set(g, { opacity: 1, scale: 1, x:0, y:0, clearProps: 'pointerEvents,x,y,scale,opacity,zIndex'});
+            });
+            document.body.classList.remove('dimmed-background', 'active', 'sub-card-interaction-lock');
+            if (onCompleteCallback) onCompleteCallback();
+        }
     });
+    if (focusedSub) {
+        focusedSub.classList.remove('focused');
+        tl.to(focusedSub, {
+            opacity: 0,
+            scale: 0,
+            x: 0,
+            y: 0,
+            duration: 0.3,
+            ease: 'power1.in'
+        }, "resetStart");
+    }
+    if (cardToReset) {
+        const subCardContainer = cardToReset.querySelector('.sub-cards-container');
+        if (subCardContainer) {
+            const subs = Array.from(subCardContainer.querySelectorAll('.sub-card'));
+            subs.forEach(sub => {
+                gsap.killTweensOf(sub);
+                if(sub.orbitParams) gsap.killTweensOf(sub.orbitParams);
+                tl.to(sub, {
+                    opacity: 0,
+                    scale: 0,
+                    x: 0,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power1.in',
+                    onComplete: () => gsap.set(sub, {visibility: 'hidden'})
+                }, "resetStart+=0.1");
+            });
+            tl.set(subCardContainer, {visibility:'hidden', display:'none'}, ">+=0.1");
+        }
+        const innerCard = cardToReset.querySelector('.card-inner');
+        if (innerCard) {
+            tl.to(innerCard, {
+                rotationY: 0,
+                duration: 0.4,
+                ease: 'power1.inOut'
+            }, "resetStart+=0.1");
+        }
+        tl.to(cardToReset, {
+            x: 0,
+            y: 0,
+            scale: cardToReset.originalState.scale,
+            opacity: cardToReset.originalState.opacity,
+            zIndex: cardToReset.originalState.zIndex,
+            duration: 0.5,
+            ease: 'power2.inOut',
+        }, "resetStart+=0.2");
+    }
+    tl.call(() => {
+        cardGroups.forEach(g => {
+            if (g !== cardToReset) {
+                g.classList.remove('deselected');
+            }
+        });
+        document.body.classList.remove('dimmed-background', 'active');
+    }, null, ">-=0.2");
+    if (!cardToReset && focusedSub) {
+         AnimationState.resetAllStateFlags();
+    }
   }
-
-  // Initialization complete
 });
