@@ -1,386 +1,498 @@
-/* =======================================
-   THEME VARIABLES & CUSTOM PROPERTIES
-======================================= */
+/* =======================
+   THEME VARIABLES
+======================= */
+
+/* Dark mode as default */
 :root {
-  /* Color Palette */
-  --color-bg: #0A0F1A;
-  --color-fg: #E0E7FF;
-  --color-muted: #8A9BB0;
-  --color-accent: #58A6FF;
-  --color-card-bg: #161E2D;
-  --color-card-bg-alt: #1F2937; /* For card back or interactive elements */
-  --color-border: #2A3B53;
-  --color-text-on-accent: #FFFFFF;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.15);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.2);
-  --shadow-card: var(--shadow-md);
-  --shadow-card-hover: var(--shadow-lg);
-
-  /* Typography & Spacing */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-
-  --radius-sm: 3px;
-  --radius-md: 6px;
-  --radius-lg: 12px;
-  --radius-round: 50%;
-
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  --font-monospace: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-
-  --transition-fast: 0.15s ease;
-  --transition-std: 0.3s ease;
+  --bg: #0f172a;          /* slate-900 */
+  --fg: #e2e8f0;          /* slate-200 */
+  --muted: #94a3b8;       /* slate-400 */
+  --accent: #3b82f6;      /* blue-500 */
+  --card-bg: #1e293b;     /* slate-800 */
+  --border: #334155;      /* slate-700 */
 }
 
 body.light {
-  --color-bg: #F7F9FC;
-  --color-fg: #1E2A3B;
-  --color-muted: #5A6B80;
-  --color-accent: #0052CC;
-  --color-card-bg: #FFFFFF;
-  --color-card-bg-alt: #F0F2F5;
-  --color-border: #D0D7E0;
-  --color-text-on-accent: #FFFFFF;
+  --bg: #f8fafc;          /* slate-50 */
+  --fg: #0f172a;          /* slate-900 */
+  --muted: #64748b;       /* slate-500 */
+  --accent: #2563eb;      /* blue-600 */
+  --card-bg: #ffffff;
+  --border: #cbd5e1;      /* slate-300 */
 }
 
-/* =======================================
-   BASE & RESET
-======================================= */
-*, *::before, *::after {
+/* =======================
+   BASE STYLES
+======================= */
+
+* {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px; /* Base font size */
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-fg);
-  font-family: var(--font-sans);
-  min-height: 100vh;
-  transition: background-color var(--transition-std), color var(--transition-std);
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
-  transition: color var(--transition-fast);
 }
-a:hover, a:focus {
+a:hover {
   text-decoration: underline;
-  color: var(--color-fg); /* Or a lighter/darker accent */
 }
 
-img, picture, video, canvas, svg {
-  display: block;
-  max-width: 100%;
-}
-
-/* Focus outline for accessibility */
-:focus-visible {
-  outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* =======================================
-   PORTFOLIO CARD ANIMATIONS
-======================================= */
-
-/* Grid container for cards */
-.card-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-md);
-  padding: var(--space-md);
-  max-width: 1200px;
-  margin: var(--space-lg) auto;
-}
-
-/* Card Group: Base for positioning and perspective */
-.card-group {
-  perspective: 1500px;
-  position: relative;
-  cursor: pointer;
-  transition: opacity var(--transition-std), transform var(--transition-std);
-  aspect-ratio: 4/3;
-  margin-bottom: var(--space-md);
-}
-
-/* Card Inner: Handles the flip animation */
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-}
-
-/* Card Faces: Front and Back */
-.card-face {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: var(--radius-md);
-  background-color: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: var(--space-lg);
-  text-align: center;
-  overflow: hidden;
-}
-
-.card-front {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.card-front .card-title {
-  font-size: 1.5rem;
-  margin: 0;
-  color: var(--color-accent);
-}
-
-.card-front .card-summary {
-  font-size: 1rem;
-  color: var(--color-muted);
-  margin: 0;
-}
-
-.card-back {
-  background-color: var(--color-card-bg-alt);
-  transform: rotateY(180deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-}
-
-.card-back p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin: 0;
-  color: var(--color-fg);
-}
-
-/* Sub-Cards Container: Positioned within the card-back */
-.sub-cards-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px;
-  height: 1px;
-  visibility: hidden;
-  display: none;
-  pointer-events: none;
-}
-
-/* Individual Sub-Card */
-.sub-card {
-  position: absolute;
-  background-color: var(--color-accent);
-  color: var(--color-text-on-accent);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  white-space: nowrap;
-  cursor: pointer;
-  z-index: 10;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
-  visibility: hidden;
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-/* State Classes */
-body.dimmed-background::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 9990;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition-std);
-}
-
-body.dimmed-background.active::before {
-  opacity: 1;
-}
-
-.card-group.deselected {
-  opacity: 0.3;
-  transform: scale(0.95);
-  pointer-events: none;
-}
-
-.card-group.selected {
-  z-index: 9995;
-}
-
-.sub-card.focused {
-  z-index: 10000;
-}
-
-/* Hover effects */
-.card-group:hover .card-face {
-  box-shadow: var(--shadow-card-hover);
-}
-
-.card-group:hover .card-title {
-  color: var(--color-fg);
-}
-
-/* =======================================
+/* =======================
    TYPOGRAPHY
-======================================= */
+======================= */
+
 h1 {
-  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-size: 2.5rem;
   line-height: 1.2;
-  margin-bottom: var(--space);
+  margin-bottom: 1rem;
 }
 h2 {
-  font-size: clamp(1.75rem, 4vw, 2rem);
+  font-size: 2rem;
   line-height: 1.3;
   margin-bottom: 0.75rem;
 }
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-size: 1.5rem;
   line-height: 1.4;
   margin-bottom: 0.5rem;
 }
-p { font-size: 1.1rem; margin-bottom: var(--space); }
-a:focus, button:focus {
-  outline: 2px dashed var(--color-accent);
-  outline-offset: 4px;
+p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }
 
-/* =======================================
-   HEADER, NAVIGATION & THEME TOGGLE
-======================================= */
+/* =======================
+   HEADER & NAV & FOOTER
+======================= */
+
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--color-card-bg);
-  padding: var(--space) 2rem;
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-card);
-}
-header nav ul {
-  display: flex; gap: 1.5rem;
-  list-style: none; margin: 0; padding: 0;
-}
-header nav a { color: var(--color-fg); font-weight: bold; }
-#themeToggle { background: transparent; border: none; font-size: 1.25rem; cursor: pointer; color: var(--color-fg); }
-@media (max-width: 768px) {
-  header { flex-direction: column; align-items: flex-start; padding: var(--space); }
-  header nav ul { flex-direction: column; gap: 0.5rem; width: 100%; margin-top: var(--space); }
-  header nav a { display: block; padding: 0.5rem 0; }
-  #themeToggle { position: absolute; top: var(--space); right: var(--space); }
+  background-color: var(--card-bg);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
-/* =======================================
-   FOOTER
-======================================= */
+header nav ul {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+header nav a {
+  color: #fff;
+  font-weight: bold;
+}
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+#themeToggle {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #fff;
+}
 footer {
-  background: var(--color-card-bg);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-muted);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  gap: 1rem;
+  text-align: center;
+}
+
+footer {
+  width: 100%;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  color: var(--muted);
   font-size: 0.9rem;
   text-align: center;
-  padding: 2rem 1rem;
-  margin-top: 4rem;
 }
+
+footer p {
+  margin-bottom: 1rem;
+}
+
 footer .social-links {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 1.25rem; list-style: none; padding: 0; margin: 1rem auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  gap: 1.25rem;
 }
+
+footer .social-links li {
+  display: flex;
+  align-items: center;
+}
+
 footer .social-links a {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  color: var(--color-accent); font-weight: 600; text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s ease;
 }
-footer .social-links a:hover { color: var(--color-fg); text-decoration: underline; }
 
-/* =======================================
-   LAYOUT & CONTAINERS
-======================================= */
-.main, .section { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+footer .social-links a:hover {
+  color: var(--fg);
+  text-decoration: underline;
+}
 
-/* =======================================
+footer .social-links i {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+
+
+
+/* =======================
+   LAYOUT / STRUCTURE
+======================= */
+
+.main {
+  padding: 2rem 1rem;
+}
+.section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* =======================
    BUTTONS
-======================================= */
-.button, .homepage-button {
+======================= */
+
+.button {
   display: inline-block;
-  background: var(--color-accent);
+  background: var(--accent);
   color: #fff;
   padding: 0.75rem 1.25rem;
   border: none;
-  border-radius: var(--radius);
-  font-weight: bold;
+  border-radius: 5px;
   text-transform: uppercase;
+  font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: background 0.2s ease;
 }
-.button:hover, .homepage-button:hover {
-  background-color: #0086c3;
-  transform: translateY(-2px);
+.button:hover {
+  background: #00a3c4;
 }
 
-/* =======================================
-   BLOG CARD LIST
-======================================= */
-.blog-grid { display: block; margin-top: 2rem; }
+.homepage-button {
+  background-color: var(--accent);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+.homepage-button:hover {
+  background-color: #0086c3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* =======================
+   BLOG LIST: SINGLE COLUMN
+======================= */
+
+.blog-grid {
+  display: block;
+  margin-top: 2rem;
+}
 .blog-card {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  background-color: var(--card-bg);
+  border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, margin-left 0.2s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, margin-left 0.2s ease;
+  position: relative;
 }
+
 .blog-card:hover {
   transform: translateY(-3px);
   margin-left: -8px;
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
 }
-.blog-card h2 { margin: 0 0 0.5rem; color: var(--color-accent); }
-.blog-card .meta { color: var(--color-muted); font-size: 0.9rem; margin-bottom: 1rem; }
-.read-more { color: var(--color-accent); font-weight: bold; }
-.read-more:hover { text-decoration: underline; }
+
+.blog-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.blog-card .meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+.read-more {
+  color: var(--accent);
+  font-weight: bold;
+  text-decoration: none;
+}
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* =======================
+   HOMEPAGE
+======================= */
+.homepage-intro {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+  color: var(--fg);
+}
+.homepage-intro h2 {
+  text-align: center;
+}
+
+
+.homepage-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  font-size: 1.1rem;
+}
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 3rem auto;
+}
+.link-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(255,255,255,0.05);
+  text-align: center;
+}
+.link-card h2 {
+  margin: 0 0 0.5rem;
+}
+
+/* =======================
+   SINGLE POST / PROJECT
+======================= */
+
+.single-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.single-title {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+.single-date {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.single-content {
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+.single-content h2,
+.single-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--fg);
+}
+.single-content p {
+  margin-bottom: 1.25rem;
+}
+.single-content a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.single-content pre {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.single-content code {
+  color: #0ff;
+  font-family: monospace;
+}
+
+/* =======================
+   PORTFOLIO / PROJECTS
+======================= */
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.flip-card {
+  background: none;
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 240px; /* force height */
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--card-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  backface-visibility: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* =======================
+   SUB-CARDS (refined)
+======================= */
+
+/* Ensure parent can overflow */
+.card-group {
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* Container: a single point at the card’s center */
+.sub-cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none; /* until we scatter them */
+}
+
+/* Each sub-card starts exactly at that point */
+.sub-card {
+  position: absolute;
+  top: 0;  /* relative to .sub-cards (its own zero-point) */
+  left: 0;
+  transform: scale(0.5);
+  opacity: 0;
+
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 1;
+}
+
+/* When the card is selected, let sub-cards be interactive and above it */
+.card-group.selected .sub-card {
+  pointer-events: auto;
+  z-index: 10001;
+}
+
+/* Keep the main flip-card sized and square at 250px */
+.card-group .main-card {
+  width: 250px;
+  /* (your existing styling…) */
+}
+
+.card-group.selected .card-inner {
+  width: 250px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* — overlay under the selected card — */
+body.dimmed::before {
+  content: "";
+  position: fixed;
+  inset: 0;                         /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.6);      /* semi-transparent black */
+  z-index: 9998;                    /* just below the selected card */
+}
+
+/* — fade out all non-selected cards — */
+body.dimmed .card-group {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* — bring the selected card to full opacity & front — */
+body.dimmed .card-group.selected {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 9999;                    /* above the overlay */
+}
+
+/* — and its sub-cards above that — */
+body.dimmed .card-group.selected .sub-card {
+  z-index: 10000;
+  pointer-events: auto;
+}
