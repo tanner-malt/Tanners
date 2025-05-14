@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(subCardContainer, { display: 'block', visibility: 'visible' });
     void subCardContainer.offsetHeight;
     const orbitRadius = Math.min(parentGroup.offsetWidth, parentGroup.offsetHeight) * 0.30;
-    const orbitSpeedBase = 30;
+    const orbitSpeedBase = 50;
     const tl = gsap.timeline({
         onStart: () => { 
             AnimationState.isAnimating = true;
@@ -251,11 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.killTweensOf(sub);
       if (sub.orbitParams) gsap.killTweensOf(sub.orbitParams); 
       const startAngle = (Math.PI * 2 / subs.length) * index;
-      const speed = orbitSpeedBase + (Math.random() * 10 - 5);
       sub.orbitParams = {
         angle: startAngle,
-        radius: orbitRadius * (1.2 * 0.4),
-        speed: Math.max(10, speed),
+        radius: orbitRadius * (7),
+        speed: orbitSpeedBase,
         direction: 1
       };
       const initialX = Math.cos(startAngle) * sub.orbitParams.radius;
