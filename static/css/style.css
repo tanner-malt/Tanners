@@ -369,9 +369,10 @@ footer .social-links i {
 
 .card-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 1rem;
   margin-top: 3rem;
+  margin-right: 1rem;
 }
 
 .flip-card {
