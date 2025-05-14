@@ -254,9 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const speed = orbitSpeedBase + (Math.random() * 10 - 5);
       sub.orbitParams = {
         angle: startAngle,
-        radius: orbitRadius * (0.8 + Math.random() * 0.4),
-        speed: Math.max(15, speed),
-        direction: (Math.random() > 0.5) ? 1 : -1
+        radius: orbitRadius * (1.2 * 0.4),
+        speed: Math.max(10, speed),
+        direction: 1
       };
       const initialX = Math.cos(startAngle) * sub.orbitParams.radius;
       const initialY = Math.sin(startAngle) * sub.orbitParams.radius;
