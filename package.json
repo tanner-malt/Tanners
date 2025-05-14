@@ -1,0 +1,22 @@
+{
+  "name": "tanners-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website built with Hugo",
+  "main": "index.js",
+  "scripts": {
+    "start": "hugo server -D",
+    "build": "hugo --minify",
+    "dev": "hugo server -D --disableFastRender"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5"
+  },
+  "devDependencies": {
+    "hugo-bin": "^0.121.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+} 
