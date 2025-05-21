@@ -6,3 +6,7 @@ hugo_stats.json
 
 # Temporary lock file while building
 /.hugo_build.lock
+
+
+# Script to make a new blog post
+new_blog.ps1

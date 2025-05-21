@@ -1,22 +1,21 @@
 {
-  "name": "tanners-portfolio",
+  "name": "tanners",
   "version": "1.0.0",
-  "description": "Personal portfolio website built with Hugo",
   "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
-    "start": "hugo server -D",
-    "build": "hugo --minify",
-    "dev": "hugo server -D --disableFastRender"
+    "dev": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --watch",
+    "build": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --minify"
   },
-  "dependencies": {
-    "gsap": "^3.12.5"
-  },
-  "devDependencies": {
-    "hugo-bin": "^0.121.2"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
+  "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.1"
+  }
 } 
