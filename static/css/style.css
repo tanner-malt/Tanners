@@ -14,7 +14,7 @@
 
 body.light {
   --bg: #f8fafc;          /* slate-50 */
-  --fg: #0f172a;          /* slate-900 */
+  --fg: #110000;          /* slate-900 */
   --muted: #64748b;       /* slate-500 */
   --accent: #2563eb;      /* blue-600 */
   --card-bg: #ffffff;
@@ -81,7 +81,7 @@ header {
   align-items: center;
   justify-content: space-between;
   background-color: var(--card-bg);
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   
@@ -95,7 +95,7 @@ header nav ul {
   list-style: none;
 }
 header nav a {
-  color: #fff;
+  color: var(--fg);
   font-weight: bold;
 }
 .avatar {
@@ -364,7 +364,7 @@ footer .social-links i {
 }
 
 /* =======================
-   SUB CARDS
+   SUB-CARDS (refined)
 ======================= */
 
 

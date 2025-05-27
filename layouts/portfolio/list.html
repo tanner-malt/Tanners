@@ -1,0 +1,89 @@
+{{ define "main" }}
+  <!-- 🚀 PORTFOLIO LAYOUT ACTIVE 🚀 -->
+  <section class="section">
+    <h1 class="single-title" style="text-align: center;">
+      My Portfolio & Services
+    </h1>
+    <p style="text-align: center; max-width: 700px; margin: 1rem auto; color: var(--muted);">
+      These are real-world challenges I’ve tackled—and the kind of projects I’m excited to do next.<br>
+      Click to see more.
+    </p>
+  </section>
+
+  <!-- Move card-list outside .section so it can span full width -->
+  <div class="card-list">
+
+    <!-- Predictive Modeling -->
+    <div class="card-group">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <h3 class="card-title">🔍 Predictive Modeling</h3>
+          <p class="card-summary">Unlock actionable insights from your data.</p>
+        </div>
+        <div class="card-face card-back">
+          <p>I'll build data pipelines, craft ML models, and surface key insights.</p>
+        </div>
+      </div>
+      <div class="sub-cards-container">
+        <div class="sub-card">Forecast sales using historical trends.</div>
+        <div class="sub-card">Optimize inventory investment.</div>
+        <div class="sub-card">Project future directions with trend analysis.</div>
+      </div>
+    </div>
+
+    <!-- Business Intelligence -->
+    <div class="card-group">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <h3 class="card-title">📊 Business Intelligence</h3>
+          <p class="card-summary">Visualize your key metrics in one place.</p>
+        </div>
+        <div class="card-face card-back">
+          <p>Custom dashboards, automated KPI monitoring, and Excel reporting.</p>
+        </div>
+      </div>
+      <div class="sub-cards-container">
+        <div class="sub-card">Executive-level KPI dashboards.</div>
+        <div class="sub-card">Integrated systems for seamless data flow.</div>
+        <div class="sub-card">Automated Excel reports straight from your DB.</div>
+      </div>
+    </div>
+
+    <!-- Automation & Workflow Tools -->
+    <div class="card-group">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <h3 class="card-title">⚙ Automation & Workflow Tools</h3>
+          <p class="card-summary">Automate repetitive tasks and save time.</p>
+        </div>
+        <div class="card-face card-back">
+          <p>End-to-end data pipelines and scripts that streamline your workflows.</p>
+        </div>
+      </div>
+      <div class="sub-cards-container">
+        <div class="sub-card">Automated data collection with zero hassle.</div>
+        <div class="sub-card">Workflow-specific non-AI automations.</div>
+        <div class="sub-card">Eliminate daily, weekly, and monthly manual processes.</div>
+      </div>
+    </div>
+
+    <!-- General Programming -->
+    <div class="card-group">
+      <div class="card-inner">
+        <div class="card-face card-front">
+          <h3 class="card-title">💻 General Programming</h3>
+          <p class="card-summary">Custom scripts and tools tailored to your needs.</p>
+        </div>
+        <div class="card-face card-back">
+          <p>From budget calculators to data scrapers and web apps.</p>
+        </div>
+      </div>
+      <div class="sub-cards-container">
+        <div class="sub-card">Desktop applications.</div>
+        <div class="sub-card">Web services.</div>
+        <div class="sub-card">Responsive websites.</div>
+      </div>
+    </div>
+
+  </div>
+{{ end }}

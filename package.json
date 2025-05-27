@@ -1,0 +1,21 @@
+{
+  "name": "tanners",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --watch",
+    "build": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.1"
+  }
+} 
