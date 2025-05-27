@@ -9,10 +9,12 @@ enableRobotsTXT = true          # Generate a robots.txt file
   description = "This is my blog/learning space"  
   author = { name = "Tanner McGrath", bio = "Writer and Developer" }        
 
-[menu]  [[menu.main]]
+[menu]
+  [[menu.main]]
     name = "Home"
     url = "/"
-    weight = 1  [[menu.main]]
+    weight = 1
+  [[menu.main]]
     name = "Blog"
     url = "/blog/"
     weight = 2
