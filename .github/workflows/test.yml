@@ -2,9 +2,9 @@ name: Automated Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   test:
@@ -20,7 +20,7 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm install
+      run: npm ci
     
     - name: Run unit tests
       run: npm run test:unit

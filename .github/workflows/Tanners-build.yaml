@@ -27,11 +27,23 @@ jobs:
         with:
           submodules: 'recursive'
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
           extended: true
+
+      - name: Build CSS (Tailwind via PostCSS)
+        run: npm run build:css
 
       - name: Build Hugo assets
 # uncomment the following lines if you want to add environment variables for this step

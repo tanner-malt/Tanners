@@ -6,8 +6,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --watch",
-    "build": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/tailwind.css --minify"
+    "dev": "postcss ./assets/css/main.css -o ./static/css/tailwind.css -w",
+    "build:css": "cross-env NODE_ENV=production postcss ./assets/css/main.css -o ./static/css/tailwind.css",
+    "build": "npm run build:css",
+    "test:unit": "echo \"No unit tests defined\"",
+    "test:integration": "echo \"No integration tests defined\""
   },
   "keywords": [],
   "author": "",
@@ -15,7 +18,12 @@
   "description": "",
   "devDependencies": {
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.0",
     "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "tanners": "file:"
   }
-} 
+}

@@ -5,6 +5,9 @@ module.exports = {
     "./content/**/*.{html,md}",
     "./themes/**/layouts/**/*.html",
   ],
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     extend: {
       colors: {
