@@ -1,5 +1,5 @@
 +++
-date = '2025-01-28'
+date = '2025-12-22'
 title = 'December Recap'
 +++
 
