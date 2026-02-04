@@ -1,13 +1,28 @@
 {{ define "main" }}
-<article class="single-page">
-  <h1 class="single-title">{{ .Title }}</h1>
+<div class="page-wrapper">
+  <section class="page-container">
+    <article class="page-panel">
+      <header class="page-panel-header">
+        <div class="header-badge">Article</div>
+        <h1 class="page-panel-title">{{ .Title }}</h1>
+        {{ if .Date }}
+          <p class="page-panel-subtitle">{{ .Date.Format "January 2, 2006" }}</p>
+        {{ end }}
+      </header>
 
-  {{ if .Date }}
-    <p class="single-date">{{ .Date.Format "Jan 2, 2006" }}</p>
-  {{ end }}
+      <div class="page-panel-content prose-content">
+        {{ .Content }}
+      </div>
 
-  <div class="single-content">
-    {{ .Content }}
-  </div>
-</article>
+      <footer class="page-panel-footer">
+        <a href="/blog/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 8H3M3 8L8 3M3 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Back to all posts</span>
+        </a>
+      </footer>
+    </article>
+  </section>
+</div>
 {{ end }}

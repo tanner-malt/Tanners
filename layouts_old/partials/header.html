@@ -1,16 +1,14 @@
 <header>
-    <nav>
-      <ul>
-        {{ range .Site.Menus.main }}
-          <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-        {{ end }}
-      </ul>
-    </nav>
-  
-    <!-- DARK/LIGHT TOGGLE BUTTON -->
-    <button id="themeToggle" aria-label="Toggle dark/light">🌓</button>
-  </header>
+  <nav>
+    <ul>
+      {{ range .Site.Menus.main }}
+        <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+      {{ end }}
+    </ul>
+  </nav>
 
-    <!-- Analytics -->
-  <script data-goatcounter="https://tdogmannerbanner.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+  <button id="themeToggle" aria-label="Toggle theme">☀️</button>
+</header>
+
+<script data-goatcounter="https://tdogmannerbanner.goatcounter.com/count"
+      async src="//gc.zgo.at/count.js"></script>

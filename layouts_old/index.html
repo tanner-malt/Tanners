@@ -1,16 +1,34 @@
 {{ define "main" }}
-<section class="hero" style="text-align: center; padding: 5rem 1rem;">
-  <h1 class="single-title" style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">
-    Hi, I'm <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tanner</span>! 👋
-  </h1>
-  <p style="color: var(--muted); font-size: 1.3rem; max-width: 600px; margin: 1.5rem auto; line-height: 1.8;">
-    Developer, engineer, and lifelong learner building things that matter.
-  </p>
+<div class="page-wrapper">
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Hi, I'm <span class="gradient-text">Tanner</span>
+      </h1>
+      <p class="hero-subtitle">
+        Building thoughtful software and exploring the intersection of technology, AI, and engineering.
+      </p>
 
-  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem;">
-    <a href="/about/" class="homepage-button">👤 About Me</a>
-    <a href="/blog/" class="homepage-button">📘 Read the Blog</a>
-    <a href="/now/" class="homepage-button">📌 What I'm Doing Now</a>
-  </div>
-</section>
+      <div class="hero-buttons">
+        <a href="/about/" class="btn btn-primary">About Me</a>
+        <a href="/blog/" class="btn btn-secondary">Read the Blog</a>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="decoration-ring"></div>
+      <div class="decoration-ring decoration-ring-2"></div>
+      <div class="decoration-dot"></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="page-container homepage-content">
+    <div class="page-panel">
+      <div class="page-panel-content home-content">
+        {{ .Content }}
+      </div>
+    </div>
+  </section>
+</div>
 {{ end }}
