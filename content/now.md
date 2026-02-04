@@ -1,10 +1,5 @@
 +++
 title = "Now"
-description = "What I’m focused on right now, and where my energy’s going."
-+++
-
-+++
-title = "Now"
 description = "What I'm focused on right now, and where my energy's going."
 +++
 

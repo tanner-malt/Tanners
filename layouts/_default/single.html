@@ -1,13 +1,19 @@
 {{ define "main" }}
-<article class="single-page">
-  <h1 class="single-title">{{ .Title }}</h1>
+<section class="page-section">
+  <article class="single-page">
+    <h1 class="single-title">{{ .Title }}</h1>
 
-  {{ if .Date }}
-    <p class="single-date">{{ .Date.Format "Jan 2, 2006" }}</p>
-  {{ end }}
+    {{ if .Date }}
+      <p class="single-date">📅 {{ .Date.Format "January 2, 2006" }}</p>
+    {{ end }}
 
-  <div class="single-content">
-    {{ .Content }}
-  </div>
-</article>
+    <div class="single-content">
+      {{ .Content }}
+    </div>
+
+    <div class="post-navigation">
+      <a href="/blog/" class="back-link">← Back to all posts</a>
+    </div>
+  </article>
+</section>
 {{ end }}

@@ -1,16 +1,50 @@
 {{ define "main" }}
-<section class="hero" style="text-align: center; padding: 5rem 1rem;">
-  <h1 class="single-title" style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">
-    Hi, I'm <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tanner</span>! 👋
-  </h1>
-  <p style="color: var(--muted); font-size: 1.3rem; max-width: 600px; margin: 1.5rem auto; line-height: 1.8;">
-    Developer, engineer, and lifelong learner building things that matter.
-  </p>
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Hi, I'm <span class="gradient-text">Tanner</span>! 👋
+    </h1>
+    <p class="hero-subtitle">
+      Developer, engineer, and lifelong learner building things that matter.
+    </p>
 
-  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem;">
-    <a href="/about/" class="homepage-button">👤 About Me</a>
-    <a href="/blog/" class="homepage-button">📘 Read the Blog</a>
-    <a href="/now/" class="homepage-button">📌 What I'm Doing Now</a>
+    <div class="hero-buttons">
+      <a href="/about/" class="homepage-button">👤 About Me</a>
+      <a href="/blog/" class="homepage-button">📘 Read the Blog</a>
+      <a href="/now/" class="homepage-button">📌 What I'm Doing Now</a>
+    </div>
   </div>
 </section>
+
+<section class="homepage-section">
+  <div class="section-content">
+    {{ .Content }}
+  </div>
+</section>
+
+{{ with .Site.GetPage "/blog" }}
+  {{ $posts := .Pages.ByDate.Reverse }}
+  {{ if gt (len $posts) 0 }}
+  <section class="homepage-section">
+    <h2 class="section-title">✨ Latest Posts</h2>
+    <div class="blog-grid">
+      {{ range first 3 $posts }}
+        <div class="blog-card">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p class="meta">{{ .Date.Format "January 2, 2006" }}</p>
+          {{ with .Params.summary }}
+            <p class="card-summary">{{ . }}</p>
+          {{ else }}
+            <p class="card-summary">{{ .Summary | truncate 120 }}</p>
+          {{ end }}
+          <a class="read-more" href="{{ .RelPermalink }}">Read more</a>
+        </div>
+      {{ end }}
+    </div>
+    <div class="section-cta">
+      <a href="/blog/" class="homepage-button">View All Posts →</a>
+    </div>
+  </section>
+  {{ end }}
+{{ end }}
 {{ end }}
