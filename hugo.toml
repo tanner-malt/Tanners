@@ -44,7 +44,7 @@ enableRobotsTXT = true
 
   [params.author]
     name = "Tanner McGrath"
-    headline = "Developer, Engineer, Lifelong Learner"
+    headline = "Tech Enthusiast & Builder"
     bio = "Building things that matter."
     links = [
       { github = "https://github.com/tanner-malt" },
