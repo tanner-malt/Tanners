@@ -2,23 +2,23 @@
    THEME VARIABLES
 ======================= */
 
-/* Dark mode as default */
+/* Modern Minimalist - Light mode as default */
 :root {
-  --bg: #0f172a;          /* slate-900 */
-  --fg: #e2e8f0;          /* slate-200 */
-  --muted: #94a3b8;       /* slate-400 */
-  --accent: #3b82f6;      /* blue-500 */
-  --card-bg: #1e293b;     /* slate-800 */
-  --border: #334155;      /* slate-700 */
+  --bg: #ffffff;          /* white */
+  --fg: #1a1a1a;          /* near black */
+  --muted: #666666;       /* gray */
+  --accent: #0066cc;      /* professional blue */
+  --card-bg: #f8f9fa;     /* light gray */
+  --border: #e0e0e0;      /* light border */
 }
 
-body.light {
-  --bg: #f8fafc;          /* slate-50 */
-  --fg: #110000;          /* slate-900 */
-  --muted: #64748b;       /* slate-500 */
-  --accent: #2563eb;      /* blue-600 */
-  --card-bg: #ffffff;
-  --border: #cbd5e1;      /* slate-300 */
+body.dark {
+  --bg: #1a1a1a;          /* charcoal */
+  --fg: #f5f5f5;          /* off-white */
+  --muted: #b0b0b0;       /* light gray */
+  --accent: #4d94ff;      /* lighter blue for dark mode */
+  --card-bg: #2a2a2a;     /* dark card */
+  --border: #404040;      /* dark border */
 }
 
 /* =======================

@@ -11,12 +11,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'custom-bg': '#0f172a',
-        'custom-fg': '#e2e8f0',
-        'custom-muted': '#94a3b8',
-        'custom-accent': '#3b82f6',
-        'custom-card-bg': '#1e293b',
-        'custom-border': '#334155',
+        'custom-bg': '#ffffff',
+        'custom-fg': '#1a1a1a',
+        'custom-muted': '#666666',
+        'custom-accent': '#0066cc',
+        'custom-card-bg': '#f8f9fa',
+        'custom-border': '#e0e0e0',
       }
     },
   },
