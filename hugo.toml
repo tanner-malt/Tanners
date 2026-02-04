@@ -13,7 +13,7 @@ enableRobotsTXT = true
   author = "authors"
 
 [params]
-  colorScheme = "congo"
+  colorScheme = "ocean"
   defaultAppearance = "dark"
   autoSwitchAppearance = true
   
