@@ -16,9 +16,3 @@ This is my space for sharing thoughts on:
 
 - **[About](/about/)** — Learn more about my background and interests
 - **[Now](/now/)** — What I'm currently working on and thinking about
-- **[GitHub](https://github.com/tanner-malt)** — Check out my projects
-- **[LinkedIn](https://www.linkedin.com/in/tanner-mcgrath-aa6aa0228)** — Professional profile
-
----
-
-*Thanks for visiting! Feel free to reach out at tanner@tanner-mcgrath.me with thoughts, feedback, or collaboration ideas.*

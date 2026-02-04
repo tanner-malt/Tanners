@@ -1,8 +1,10 @@
 {{ define "main" }}
 <section class="page-section">
-  <article class="single-page">
-    <h1 class="single-title">{{ .Title }}</h1>
-    <div class="single-content">
+  <article class="content-panel">
+    <header class="panel-header">
+      <h1 class="panel-title">{{ .Title }}</h1>
+    </header>
+    <div class="panel-body">
       {{ .Content }}
     </div>
   </article>

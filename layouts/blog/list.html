@@ -1,23 +1,27 @@
 {{ define "main" }}
 <section class="page-section">
-  <div class="page-header">
-    <h1 class="page-title">Blog</h1>
-    <p class="page-subtitle">Thoughts, tutorials, and lessons learned along the way.</p>
-  </div>
+  <div class="content-panel">
+    <header class="panel-header">
+      <h1 class="panel-title">Blog</h1>
+      <p class="panel-subtitle">Thoughts, no real schedule just however often I feel.</p>
+    </header>
 
-  <div class="blog-grid">
-    {{ range .Pages.ByDate.Reverse }}
-      <article class="blog-card">
-        <p class="meta">{{ .Date.Format "Jan 2, 2006" }}</p>
-        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        {{ with .Params.summary }}
-          <p class="card-summary">{{ . }}</p>
-        {{ else }}
-          <p class="card-summary">{{ .Summary | truncate 150 }}</p>
+    <div class="panel-body">
+      <div class="blog-grid">
+        {{ range .Pages.ByDate.Reverse }}
+          <article class="blog-card interactive-card">
+            <p class="meta">{{ .Date.Format "Jan 2, 2006" }}</p>
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            {{ with .Params.summary }}
+              <p class="card-summary">{{ . }}</p>
+            {{ else }}
+              <p class="card-summary">{{ .Summary | truncate 150 }}</p>
+            {{ end }}
+            <a class="read-more" href="{{ .RelPermalink }}">Continue reading →</a>
+          </article>
         {{ end }}
-        <a class="read-more" href="{{ .RelPermalink }}">Continue reading</a>
-      </article>
-    {{ end }}
+      </div>
+    </div>
   </div>
 </section>
 {{ end }}
