@@ -1,6 +1,8 @@
 +++
 title = "About Tanner"
 description = "Who I am, my background, and what drives me"
+showDate = false
+showReadingTime = false
 +++
 
 _Last updated: February 2026_
