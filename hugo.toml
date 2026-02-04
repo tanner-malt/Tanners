@@ -1,44 +1,83 @@
 baseURL = "https://tanner-mcgrath.me"
-languageCode = 'en-us'
-title = 'Techy Tanner'
+languageCode = "en-us"
+title = "Techy Tanner"
+theme = "congo"
 timeZone = "America/New_York"
 
-enableRobotsTXT = true          # Generate a robots.txt file
+enableRobotsTXT = true
+
+# Congo requires this for proper taxonomies
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
 
 [params]
-  description = "This is my blog/learning space"  
-  author = { name = "Tanner McGrath", bio = "Writer and Developer" }        
+  colorScheme = "congo"
+  defaultAppearance = "dark"
+  autoSwitchAppearance = true
+  
+  enableSearch = true
+  enableCodeCopy = true
+  
+  [params.homepage]
+    layout = "profile"
+    homepageImage = ""
+    showRecent = true
+    recentLimit = 5
+
+  [params.article]
+    showDate = true
+    showDateUpdated = false
+    showAuthor = true
+    showReadingTime = true
+    showTableOfContents = true
+    showTaxonomies = true
+    showWordCount = false
+    showSummary = true
+    sharingLinks = ["twitter", "linkedin", "reddit", "email"]
+
+  [params.list]
+    showBreadcrumbs = true
+    showSummary = true
+    showTableOfContents = false
+    groupByYear = true
+
+  [params.author]
+    name = "Tanner McGrath"
+    headline = "Developer, Engineer, Lifelong Learner"
+    bio = "Building things that matter."
+    links = [
+      { github = "https://github.com/tanner-malt" },
+      { linkedin = "https://www.linkedin.com/in/tanner-mcgrath-aa6aa0228" },
+      { kaggle = "https://www.kaggle.com/tannermcgrathlol" },
+      { email = "mailto:tanner@tanner-mcgrath.me" }
+    ]
 
 [menu]
   [[menu.main]]
     name = "Home"
-    url = "/"
+    pageRef = "/"
     weight = 1
   [[menu.main]]
     name = "Blog"
-    url = "/blog/"
+    pageRef = "blog"
     weight = 2
   [[menu.main]]
     name = "About"
-    url = "/about/"
+    pageRef = "about"
     weight = 3
   [[menu.main]]
     name = "Now"
-    url = "/now/"
+    pageRef = "now"
     weight = 4
 
-
 [markup]
-  defaultMarkdownHandler = "goldmark"
-  [markup.goldmark.renderer]
-    unsafe = true  # Allow raw HTML in Markdown
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
 
 [outputs]
-home = ["HTML"]
-
-[Params.author]
-  name = "Tanner McGrath"
-  github = "https://github.com/tanner-malt"
-  email = "tanner@tanner-mcgrath.me"
-  linkedin = "https://www.linkedin.com/in/tanner-mcgrath-aa6aa0228"
-  kaggle = "https://www.kaggle.com/tannermcgrathlol"
+  home = ["HTML", "RSS", "JSON"]
