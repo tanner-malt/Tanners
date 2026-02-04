@@ -1,6 +1,10 @@
 +++
 title = "Now"
 description = "What I'm focused on right now, and where my energy's going."
+showDate = false
+showAuthor = false
+showReadingTime = false
+showTableOfContents = false
 +++
 
 _Last updated: February 2026_

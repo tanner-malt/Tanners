@@ -19,6 +19,10 @@ enableRobotsTXT = true
   
   enableSearch = true
   enableCodeCopy = true
+
+  [params.header]
+    layout = "fixed"
+    showTitle = true
   
   [params.homepage]
     layout = "profile"
