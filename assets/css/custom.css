@@ -96,3 +96,48 @@ article > header {
 body {
   background: linear-gradient(180deg, #0f172a 0%, #1a2847 100%);
 }
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Add hover effects to headings */
+.prose h2,
+.prose h3 {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.prose h2::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: linear-gradient(to bottom, #3b82f6, #06b6d4);
+  border-radius: 2px;
+  transition: height 0.3s ease;
+}
+
+.prose h2:hover::before {
+  height: 100%;
+}
+
+/* Smooth section transitions with gradient dividers */
+article section,
+.prose {
+  position: relative;
+}
+
+/* Add gradient overlays to list items for depth */
+.prose ul > li {
+  transition: transform 0.2s ease, padding-left 0.2s ease;
+}
+
+.prose ul > li:hover {
+  transform: translateX(4px);
+  padding-left: 12px;
+}
