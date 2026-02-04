@@ -1,16 +1,33 @@
 /* Custom styling for site */
 
-/* Sticky header with visual distinction */
+/* Sticky header with visual distinction - full width */
 body > header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 58, 95, 0.98) 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  padding: 1rem 0;
-  margin: 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #0f172a;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  padding: 1.25rem 2rem;
+}
+
+body > header > * {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  body > header {
+    padding: 1rem 1.5rem;
+  }
+  
+  body > header > * {
+    padding: 0;
+  }
 }
 
 article > header {
