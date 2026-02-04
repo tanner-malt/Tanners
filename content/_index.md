@@ -13,13 +13,13 @@ Welcome! I'm passionate about building technology that solves real problems and 
 
 This is my space for sharing thoughts on:
 
-{{< highlight >}}
+{{< alert >}}
 **AI & Machine Learning** — Intelligent automation and responsible AI development. This is where I'm directing most of my learning energy right now.
-{{< /highlight >}}
+{{< /alert >}}
 
-{{< highlight >}}
+{{< alert >}}
 **Software Development** — Building secure, scalable applications
-{{< /highlight >}}
+{{< /alert >}}
 
 {{< badge "Engineering" />}} Robotics, drones, autonomous vehicles, and automation
 
