@@ -11,28 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
       with:
-        node-version: '18'
-        cache: 'npm'
+        submodules: 'recursive'
     
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run unit tests
-      run: npm run test:unit
-    
-    - name: Run integration tests
-      run: npm run test:integration
-    
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
       with:
-        name: test-results
-        path: |
-          coverage/
-          logs/ 
+        hugo-version: 'latest'
+        extended: true
+    
+    - name: Build site
+      run: hugo
+    
+    - name: Verify build output
+      run: |
+        if [ -d "public" ]; then
+          echo "Build successful - public directory exists"
+          ls -la public/
+        else
+          echo "Build failed - no public directory"
+          exit 1
+        fi 
