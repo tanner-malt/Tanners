@@ -23,8 +23,7 @@ enableRobotsTXT = true
   [params.homepage]
     layout = "profile"
     homepageImage = ""
-    showRecent = true
-    recentLimit = 5
+    showRecent = false
 
   [params.article]
     showDate = true
