@@ -14,7 +14,7 @@ Welcome! I'm passionate about building technology that solves real problems and 
 This is my space for sharing thoughts on:
 
 {{< alert >}}
-**AI & Machine Learning** — Intelligent automation and responsible AI development
+**🤖 AI & Machine Learning** — Intelligent automation and responsible AI development. This is where I'm directing most of my learning energy right now.
 {{< /alert >}}
 
 - **Software Development** — Building secure, scalable applications  
