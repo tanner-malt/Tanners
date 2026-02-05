@@ -1,0 +1,27 @@
+{{/* Scroll progress indicator */}}
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const progressBar = document.getElementById('scroll-progress');
+  const header = document.querySelector('body > header');
+  
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+    
+    // Header shrink effect
+    if (header) {
+      if (scrollTop > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+  }
+  
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+});
+</script>
