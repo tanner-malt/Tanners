@@ -1,0 +1,100 @@
+{{/* Custom SEO additions: structured data + extra meta */}}
+
+{{- $author := .Site.Params.author -}}
+{{- $siteURL := .Site.BaseURL | absURL -}}
+
+{{/* Site-wide robots / canonical reinforcement */}}
+{{- with .Site.Params.robots }}
+  <meta name="robots" content="{{ . }}" />
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}" />
+
+{{/* Author / publisher meta */}}
+{{- with $author.name }}
+  <meta name="author" content="{{ . }}" />
+{{- end }}
+
+{{/* Keywords: prefer page tags, fall back to site keywords */}}
+{{- $keywords := slice -}}
+{{- with .Params.tags }}{{ $keywords = . }}{{ end -}}
+{{- if and (not $keywords) .Site.Params.keywords }}{{ $keywords = .Site.Params.keywords }}{{ end -}}
+{{- with $keywords }}
+  <meta name="keywords" content="{{ delimit . ", " }}" />
+{{- end }}
+
+{{/* JSON-LD: WebSite + SearchAction (only on home) */}}
+{{- if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ .Site.Title | jsonify }},
+  "url": {{ $siteURL | jsonify }},
+  "description": {{ (.Site.Params.description | default .Site.Title) | jsonify }},
+  {{- if .Site.Params.enableSearch }}
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {{ (printf "%s?q={search_term_string}" $siteURL) | jsonify }},
+    "query-input": "required name=search_term_string"
+  },
+  {{- end }}
+  "author": {
+    "@type": "Person",
+    "name": {{ $author.name | jsonify }}
+  }
+}
+</script>
+{{- end }}
+
+{{/* JSON-LD: Person on /about/ */}}
+{{- if eq .RelPermalink "/about/" }}
+{{- $sameAs := slice -}}
+{{- range $author.links -}}
+  {{- range $k, $v := . -}}
+    {{- if and (ne $k "email") (hasPrefix $v "http") -}}
+      {{- $sameAs = $sameAs | append $v -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ $author.name | jsonify }},
+  "url": {{ (printf "%sabout/" $siteURL) | jsonify }},
+  "jobTitle": {{ ($author.headline | default "Software Developer") | jsonify }},
+  "description": {{ ($author.bio | default "") | jsonify }}
+  {{- with $sameAs }},
+  "sameAs": {{ . | jsonify }}
+  {{- end }}
+}
+</script>
+{{- end }}
+
+{{/* JSON-LD: BlogPosting for blog entries */}}
+{{- if and .IsPage (eq .Section "blog") }}
+{{- $desc := .Description | default .Summary | default .Site.Params.description -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ ($desc | plainify) | jsonify }},
+  "datePublished": {{ (.Date.Format "2006-01-02") | jsonify }},
+  "dateModified": {{ (.Lastmod.Format "2006-01-02") | jsonify }},
+  "url": {{ .Permalink | jsonify }},
+  "mainEntityOfPage": {{ .Permalink | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": {{ $author.name | jsonify }}
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": {{ $author.name | jsonify }}
+  }
+  {{- with .Params.tags }},
+  "keywords": {{ delimit . ", " | jsonify }}
+  {{- end }}
+}
+</script>
+{{- end }}

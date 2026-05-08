@@ -5,6 +5,26 @@ theme = "congo"
 timeZone = "America/New_York"
 
 enableRobotsTXT = true
+enableGitInfo = false
+enableEmoji = true
+
+# Default content sections used for recent posts, search and feeds
+mainSections = ["blog"]
+
+# SEO summary length (words)
+summaryLength = 30
+
+[pagination]
+  pagerSize = 10
+
+[sitemap]
+  changefreq = "weekly"
+  filename = "sitemap.xml"
+  priority = 0.7
+
+[services]
+  [services.rss]
+    limit = 42
 
 # Congo requires this for proper taxonomies
 [taxonomies]
@@ -13,12 +33,18 @@ enableRobotsTXT = true
   author = "authors"
 
 [params]
+  description = "Techy Tanner — Tanner McGrath's blog on AI, software development, engineering, and learning in public."
+  keywords = ["Tanner McGrath", "Techy Tanner", "AI", "machine learning", "software development", "engineering", "personal blog"]
   colorScheme = "ocean"
   defaultAppearance = "dark"
   autoSwitchAppearance = true
-  
+
   enableSearch = true
   enableCodeCopy = true
+
+  # Open Graph / social sharing defaults
+  showAppearanceSwitcher = true
+  robots = "index, follow"
 
   [params.header]
     layout = "fixed"
@@ -49,7 +75,7 @@ enableRobotsTXT = true
   [params.author]
     name = "Tanner McGrath"
     headline = "Tech Enthusiast & Builder"
-    bio = "Building things that matter."
+    bio = "Developer, aspiring engineer, and lifelong learner building technology that matters."
     links = [
       { github = "https://github.com/tanner-malt" },
       { linkedin = "https://www.linkedin.com/in/tanner-mcgrath-aa6aa0228" },

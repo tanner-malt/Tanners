@@ -1,6 +1,10 @@
 +++
 date = '2026-02-04'
 title = 'Does time have to move so fast?'
+description = "Reflecting on goals, mortality, shipping a first app, and balancing security with AI-assisted development."
+summary = "Reflecting on goals, mortality, shipping a first app, and balancing security with AI-assisted development."
+tags = ["life", "goals", "app-development", "security"]
+categories = ["reflection"]
 +++
 
 I've been thinking a lot about how I want my life to go, and what my goals are, and of course how limited time is.

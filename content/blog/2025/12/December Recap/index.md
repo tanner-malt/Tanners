@@ -1,6 +1,10 @@
 +++
 date = '2025-12-22'
 title = 'December Recap'
+description = "Looking back at a year of growth in programming, language learning, and confidence — and setting the stage for 2026."
+summary = "Looking back at a year of growth in programming, language learning, and confidence — and setting the stage for 2026."
+tags = ["recap", "life", "programming", "learning"]
+categories = ["recap"]
 +++
 
 It's already December. I'm actually surprised how quick this year flew by, it's always interesting to see how time flies. I'm a year in almost with my blogging, and it's astounding how much I learned and grew over the last year, It's hard to articulate how I've grown. 
