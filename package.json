@@ -1,0 +1,21 @@
+{
+  "name": "tanners",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "echo 'Using Congo theme - no custom CSS build needed'",
+    "build:css": "echo 'Using Congo theme - no custom CSS build needed'",
+    "build": "echo 'Using Congo theme - Hugo handles the build'",
+    "test:unit": "echo \"No unit tests defined\"",
+    "test:integration": "echo \"No integration tests defined\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {},
+  "dependencies": {}
+}

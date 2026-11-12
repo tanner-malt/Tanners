@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="topoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgb(59,130,246);stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:rgb(6,182,212);stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#topoGrad)" stroke-width="0.5">
+    <!-- Topographic contour lines -->
+    <path d="M0,400 Q200,350 400,380 T800,360"/>
+    <path d="M0,420 Q200,370 400,400 T800,380"/>
+    <path d="M0,440 Q200,390 400,420 T800,400"/>
+    <path d="M0,380 Q200,330 400,360 T800,340"/>
+    <path d="M0,360 Q200,310 400,340 T800,320"/>
+    <path d="M0,340 Q200,290 400,320 T800,300"/>
+    <path d="M0,460 Q200,410 400,440 T800,420"/>
+    <path d="M0,480 Q200,430 400,460 T800,440"/>
+    <path d="M0,320 Q200,270 400,300 T800,280"/>
+    <path d="M0,300 Q200,250 400,280 T800,260"/>
+    <path d="M0,500 Q200,450 400,480 T800,460"/>
+    <path d="M0,520 Q200,470 400,500 T800,480"/>
+    <path d="M0,280 Q200,230 400,260 T800,240"/>
+    <path d="M0,260 Q200,210 400,240 T800,220"/>
+    <path d="M0,540 Q200,490 400,520 T800,500"/>
+    <path d="M0,560 Q200,510 400,540 T800,520"/>
+    <path d="M0,240 Q200,190 400,220 T800,200"/>
+    <path d="M0,220 Q200,170 400,200 T800,180"/>
+    <path d="M0,200 Q200,150 400,180 T800,160"/>
+    <path d="M0,580 Q200,530 400,560 T800,540"/>
+    <path d="M0,600 Q200,550 400,580 T800,560"/>
+    <!-- Additional curved contours for realism -->
+    <ellipse cx="300" cy="400" rx="120" ry="60"/>
+    <ellipse cx="300" cy="400" rx="100" ry="50"/>
+    <ellipse cx="300" cy="400" rx="80" ry="40"/>
+    <ellipse cx="300" cy="400" rx="60" ry="30"/>
+    <ellipse cx="550" cy="350" rx="100" ry="45"/>
+    <ellipse cx="550" cy="350" rx="80" ry="36"/>
+    <ellipse cx="550" cy="350" rx="60" ry="27"/>
+    <ellipse cx="550" cy="350" rx="40" ry="18"/>
+    <ellipse cx="650" cy="500" rx="80" ry="50"/>
+    <ellipse cx="650" cy="500" rx="60" ry="38"/>
+    <ellipse cx="650" cy="500" rx="40" ry="25"/>
+    <ellipse cx="150" cy="550" rx="90" ry="40"/>
+    <ellipse cx="150" cy="550" rx="70" ry="30"/>
+    <ellipse cx="150" cy="550" rx="50" ry="22"/>
+  </g>
+</svg>
